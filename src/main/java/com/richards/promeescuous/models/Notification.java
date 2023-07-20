@@ -2,6 +2,7 @@ package com.richards.promeescuous.models;
 
 import jakarta.persistence.*;
 
+@Entity
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
