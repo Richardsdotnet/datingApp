@@ -2,6 +2,7 @@ package com.richards.promeescuous.models;
 
 import jakarta.persistence.*;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Entity
@@ -12,9 +13,12 @@ public class Media {
     private String description;
 
     @ElementCollection
+    @Enumerated(value = EnumType.STRING)
     private List<Reaction> reactions;
 
     private String  url;
     @ManyToOne
     private User user;
+
+    private Integer reactionCount = BigInteger.ZERO.intValue();
 }

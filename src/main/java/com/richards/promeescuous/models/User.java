@@ -22,7 +22,6 @@ public class User {
     @OneToOne
     private BasicData basicData;
 
-    @OneToOne
     @Enumerated
     private Role role;
 }

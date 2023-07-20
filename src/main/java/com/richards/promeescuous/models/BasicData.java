@@ -1,9 +1,6 @@
 package com.richards.promeescuous.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class BasicData {
@@ -12,8 +9,13 @@ public class BasicData {
     private Long id;
     private String firstName;
     private String lastName;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
+    @Column(unique = true, nullable = false)
     private String phoneNumber;
+    @Column(nullable = false)
     private String password;
 
 }
