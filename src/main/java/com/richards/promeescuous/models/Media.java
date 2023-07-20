@@ -15,7 +15,7 @@ public class Media {
     @ElementCollection
     @Enumerated(value = EnumType.STRING)
     private List<Reaction> reactions;
-
+    @Column(nullable = false,)
     private String  url;
     @ManyToOne
     private User user;
