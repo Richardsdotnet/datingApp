@@ -5,7 +5,6 @@ import com.richards.promeescuous.dtos.responses.RegisterUserResponse;
 import com.richards.promeescuous.models.User;
 import com.richards.promeescuous.repositories.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 

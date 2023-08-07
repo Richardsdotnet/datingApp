@@ -24,7 +24,8 @@ public class User {
     private Gender gender;
 
     @Enumerated
-    private Role role;
+    private Role authority;
+
 
     private String firstName;
     private String lastName;
