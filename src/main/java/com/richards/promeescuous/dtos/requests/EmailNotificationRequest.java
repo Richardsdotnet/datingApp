@@ -1,5 +1,6 @@
 package com.richards.promeescuous.dtos.requests;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,10 +15,11 @@ import java.util.List;
 
 public class EmailNotificationRequest {
     private Sender sender;
-    //to
+    @JsonProperty("to")
     private List<Recipient> recipient;
-    //cc
+    @JsonProperty("cc")
     private List<String> copiedEmails;
+    @JsonProperty("htmlContent")
     private String mailContent;
     private String textContent;
     private String subject;
