@@ -15,7 +15,7 @@ public class BrevoMailService implements MailService{
         String brevoMailAddress = "https://api.brevo.com/v3/smtp/email";
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-        headers.set("api-key", "");
+        headers.set("api-key", "mail.api.key");
         HttpEntity<EmailNotificationRequest> request = new HttpEntity<>(emailNotificationRequest, headers);
 
         ResponseEntity<EmailNotificationResponse> response = restTemplate.postForEntity(brevoMailAddress, request, EmailNotificationResponse.class);
