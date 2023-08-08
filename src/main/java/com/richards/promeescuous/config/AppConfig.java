@@ -8,4 +8,9 @@ public class AppConfig {
     @Value("${mail.api.key}")
     private String mailApiKey;
 
+
+    private String getMailApiKey(){
+        return mailApiKey;
+    }
+
 }
