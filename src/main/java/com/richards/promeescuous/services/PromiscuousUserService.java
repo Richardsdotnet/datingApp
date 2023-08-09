@@ -7,6 +7,7 @@ import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
 import com.richards.promeescuous.dtos.responses.ActivateAccountResponse;
 import com.richards.promeescuous.dtos.responses.ApiResponse;
 import com.richards.promeescuous.dtos.responses.RegisterUserResponse;
+import com.richards.promeescuous.exceptions.PromiscuousBaseExceptions;
 import com.richards.promeescuous.models.User;
 import com.richards.promeescuous.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -64,7 +65,7 @@ public class PromiscuousUserService implements UserService{
             String email = extractEmailFrom(token);
             User foundUser = userRepository.readByEmail(email).orElseThrow();
         }
-        throw new PromiscuousBaseException("Account activation was not successful");
+        throw new PromiscuousBaseExceptions("Account activation was not successful");
     }
 
     private static EmailNotificationRequest buildMailRequest(User savedUser){

@@ -4,7 +4,6 @@ import com.richards.promeescuous.config.AppConfig;
 import com.richards.promeescuous.dtos.requests.EmailNotificationRequest;
 import com.richards.promeescuous.dtos.responses.EmailNotificationResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;

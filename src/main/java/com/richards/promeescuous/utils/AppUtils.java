@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.richards.promeescuous.exceptions.PromiscuousBaseExceptions;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -89,7 +90,7 @@ public class AppUtils {
             String template = String.join("",fileContents);
             return template;
         }catch(IOException exception){
-            throw new PromiscuousBaseException(exception.getMessage());
+            throw new PromiscuousBaseExceptions(exception.getMessage());
         }
     }
 
