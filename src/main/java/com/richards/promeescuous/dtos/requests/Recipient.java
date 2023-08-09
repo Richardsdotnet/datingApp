@@ -6,6 +6,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class Recipient {
     private String name;
     @NonNull

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
 
-    @Value("${mail.api.key}")
+
     private String mailApiKey;
 
     @Value("${app.dev.token}")
