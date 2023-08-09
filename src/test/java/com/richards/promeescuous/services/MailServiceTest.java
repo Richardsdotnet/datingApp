@@ -22,23 +22,14 @@ import static org.junit.Assert.assertNotNull;
 public class MailServiceTest {
 
 
-
     @Autowired
     private MailService mailService;
 
-
     @Test
     public void testThatEmailSendingWorks(){
-
         String recipientEmail = "nicope8821@viperace.com";
-        EmailNotificationRequest request = getEmailNotificationRequest(recipientEmail);
-
-        EmailNotificationResponse emailNotificationResponse = mailService.send(request);
-        assertNotNull(emailNotificationResponse);
-    }
-
-    private static EmailNotificationRequest getEmailNotificationRequest(String recipientEmail) {
         String message = "<p>testing our mail service</p>";
+//        String mailSender = "noreply@promiscuous";
         String subject = "test email";
 
         Recipient recipient = new Recipient();
@@ -46,11 +37,17 @@ public class MailServiceTest {
         List<Recipient> recipients = new ArrayList<>();
         recipients.add(recipient);
 
+//        Sender sender = new Sender();
+//        sender.setEmail(mailSender);
 
         EmailNotificationRequest request = new EmailNotificationRequest();
         request.setMailContent(message);
         request.setRecipients(recipients);
         request.setSubject(subject);
-        return request;
+//        request.setSender(sender);
+
+        EmailNotificationResponse emailNotificationResponse = mailService.send(request);
+        assertNotNull(emailNotificationResponse);
     }
-}
+    }
+
