@@ -10,4 +10,5 @@ public class Recipient {
     private String name;
     @NonNull
     private String email;
+
 }

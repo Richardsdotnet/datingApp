@@ -3,6 +3,7 @@ package com.richards.promeescuous.utils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -43,4 +44,9 @@ public class AppUtils {
                 .build();
         return verifier.verify(token).getClaim("user") != null;
     }
+
+    public static String extractEmailFrom(String token){
+
+
+   return  null; }
 }

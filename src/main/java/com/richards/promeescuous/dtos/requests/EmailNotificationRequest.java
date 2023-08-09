@@ -20,12 +20,14 @@ public class EmailNotificationRequest {
     private final Sender sender = new Sender(APP_NAME,APP_EMAIL);
 
     @JsonProperty("to")
-    private List<Recipient> recipient;
+    private List<Recipient> recipients;
     @JsonProperty("cc")
     private List<String> copiedEmails;
     @JsonProperty("htmlContent")
     private String mailContent;
     private String textContent;
     private String subject;
+
+
 
 }
