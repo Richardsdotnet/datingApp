@@ -28,7 +28,6 @@ public class UserServiceTest {
     @Test
     public void testThatUserCanRegister(){
         //user fills registration form
-
         //user submits form by calling register method
         RegisterUserResponse registerUserResponse = userService.register(registerUserRequest);
         assertNotNull(registerUserResponse);
