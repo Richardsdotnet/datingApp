@@ -1,5 +1,6 @@
 package com.richards.promeescuous.models;
 
+
 import jakarta.persistence.*;
 
 @Entity
@@ -10,11 +11,6 @@ public class Notification {
     @Column(nullable = false, columnDefinition = "MEDIUMTEXT", length = 1000)
     private String content;
     private Long sender;
-
     @ManyToOne
     private User user;
-
-
-
-
 }
