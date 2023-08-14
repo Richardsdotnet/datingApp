@@ -1,4 +1,4 @@
-package com.richards.promeescuous;
+package com.richards.promeescuous.services;
 
 import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
 import com.richards.promeescuous.dtos.responses.ApiResponse;

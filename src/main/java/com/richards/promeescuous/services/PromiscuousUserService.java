@@ -44,6 +44,7 @@ public class PromiscuousUserService implements UserService{
         User savedUser = userRepository.save(user);
         //4. send verification token to the users email
         EmailNotificationRequest request = buildMailRequest(savedUser);
+
         mailService.send(request);
         //5. return response
         RegisterUserResponse registerUserResponse = new RegisterUserResponse();
