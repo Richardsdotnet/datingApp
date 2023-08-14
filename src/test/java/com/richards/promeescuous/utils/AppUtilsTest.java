@@ -1,4 +1,4 @@
-package com.richards.promeescuous.services;
+package com.richards.promeescuous.utils;
 
 import com.richards.promeescuous.utils.AppUtils;
 import lombok.extern.slf4j.Slf4j;

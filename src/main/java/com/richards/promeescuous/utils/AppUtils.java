@@ -34,7 +34,7 @@ public class AppUtils{
         return activationLink;
     }
     public static String getMailTemplate(){
-        Path templateLocation = Paths.get("C:\\Users\\DELL\\Downloads\\promiscuous\\promiscuous\\src\\main\\resources\\templates\\Index1.html");
+        Path templateLocation = Paths.get("C:\\Users\\PC\\Desktop\\prom-scous\\src\\main\\resources\\templates");
         try {
             List<String> fileContents = Files.readAllLines(templateLocation);
             String template = String.join("", fileContents);
