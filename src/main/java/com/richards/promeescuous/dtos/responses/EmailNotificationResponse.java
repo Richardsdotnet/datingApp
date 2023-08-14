@@ -1,12 +1,12 @@
 package com.richards.promeescuous.dtos.responses;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Setter
+import lombok.*;
+
 @Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class EmailNotificationResponse {
-    public String messageId;
+    private String messageId;
 }

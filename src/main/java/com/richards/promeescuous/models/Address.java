@@ -1,9 +1,7 @@
 package com.richards.promeescuous.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
 
 @Entity
 public class Address {
@@ -15,9 +13,16 @@ public class Address {
     private String state;
     private String country;
 
-
-
-
-
-
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        builder.append(houseNumber)
+                .append(",")
+                .append(street)
+                .append(",")
+                .append(state)
+                .append(",")
+                .append(country);
+        return builder.toString();
+    }
 }
