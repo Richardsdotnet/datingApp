@@ -1,11 +1,10 @@
 package com.richards.promeescuous.services;
 
-import com.richards.promeescuous.config.AppConfig;
+import africa.semicolon.promeescuous.config.AppConfig;
 import com.richards.promeescuous.dtos.requests.EmailNotificationRequest;
 import com.richards.promeescuous.dtos.responses.EmailNotificationResponse;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 @NoArgsConstructor
 public class BrevoMailService implements MailService{
 
-    private  AppConfig appConfig = new AppConfig() ;
+    private africa.semicolon.promeescuous.config.AppConfig appConfig = new AppConfig() ;
     @Override
     public EmailNotificationResponse send(EmailNotificationRequest emailNotificationRequest) {
 
