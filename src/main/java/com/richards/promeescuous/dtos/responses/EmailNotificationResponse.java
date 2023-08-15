@@ -8,5 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmailNotificationResponse {
+
     private String messageId;
 }

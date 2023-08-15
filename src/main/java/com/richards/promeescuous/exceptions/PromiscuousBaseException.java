@@ -4,8 +4,9 @@ public class PromiscuousBaseException extends RuntimeException {
 
 
 
-        public PromiscuousBaseException(String message){
-            super(message);
-        }
+
+    public PromiscuousBaseException(String message){
+        super(message);
+    }
     }
 
