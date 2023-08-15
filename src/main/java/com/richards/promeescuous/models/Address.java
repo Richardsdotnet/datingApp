@@ -14,7 +14,7 @@ public class Address {
     private String country;
 
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(houseNumber)
                 .append(",")
@@ -23,6 +23,7 @@ public class Address {
                 .append(state)
                 .append(",")
                 .append(country);
+
         return builder.toString();
     }
 }

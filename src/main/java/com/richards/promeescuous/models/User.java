@@ -5,14 +5,14 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "users")
 @Setter
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "users")
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,24 +20,27 @@ public class User {
     private LocalDate dateOfBirth;
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Address address;
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     private Gender gender;
-    private LocalDateTime createdAt;
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
     private String firstName;
+
     private String lastName;
+
+    private LocalDate createdAt;
+
     @Column(unique = true, nullable = false)
     private String email;
     @Column(unique = true)
     private String phoneNumber;
     @Column(nullable = false)
     private String password;
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
+
     private boolean isActive;
 
-
     @PrePersist
-    public void setCreatedAt(){
-        createdAt=LocalDateTime.now();
+    public void setCreatedDate() {
+        createdAt = LocalDate.now();
     }
 }
