@@ -1,6 +1,6 @@
 package com.richards.promeescuous.utils;
 
-import africa.semicolon.promeescuous.exceptions.PromiscuousBaseException;
+import com.richards.promeescuous.exceptions.PromiscuousBaseException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static africa.semicolon.promeescuous.utils.JwtUtil.generateToken;
+import static com.richards.promeescuous.utils.JwtUtil.generateToken;
 
 public class AppUtil {
 

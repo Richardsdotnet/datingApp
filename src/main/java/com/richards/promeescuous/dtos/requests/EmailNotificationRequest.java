@@ -17,9 +17,11 @@ import static com.richards.promeescuous.utils.AppUtil.APP_NAME;
 @NoArgsConstructor
 public class EmailNotificationRequest {
     private final Sender sender = new Sender(APP_NAME, APP_EMAIL);
+
     //to
     @JsonProperty("to")
     private List<Recipient> recipients;
+
     //cc
     @JsonProperty("cc")
     private List<String> copiedEmails;
@@ -31,4 +33,5 @@ public class EmailNotificationRequest {
     private String textContent;
 
     private String subject;
+
 }

@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/user")
 @AllArgsConstructor
 public class UserController {
-    private final UserService userService;
+
+    private final UserService userServices;
 
     @PostMapping
-    public ResponseEntity<RegisterUserResponse> register(@RequestBody RegisterUserRequest registerUserRequest){
-        RegisterUserResponse response = userService.register(registerUserRequest);
+    public ResponseEntity<RegisterUserResponse> register(@RequestBody RegisterUserRequest registerUserRequest) {
+        var response = userServices.register(registerUserRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        }
+
     }
-}

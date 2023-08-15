@@ -15,15 +15,16 @@ public class AppConfig {
     @Value("${app.base.url}")
     private String baseUrl;
 
+    public String getTestToken() {
+        return testToken;
+    }
+
     public String getMailApiKey() {
         return mailApiKey;
     }
 
-    public String getTestToken(){
-        return testToken;
-    }
-
-    public String getBaseUrl(){
+    public String getBaseUrl() {
         return baseUrl;
+
     }
 }
