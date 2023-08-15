@@ -15,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @AllArgsConstructor
 public class BrevoMailService implements MailService{
-    //TODO: Remove hardcoded values
     private final AppConfig appConfig;
     @Override
     public EmailNotificationResponse send(EmailNotificationRequest emailNotificationRequest) {
@@ -23,15 +22,17 @@ public class BrevoMailService implements MailService{
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("api-key", appConfig.getMailApiKey());
-        headers.set("Content-Type", "application/json");
+        headers.set("Content-type", "application/json");
+
         HttpEntity<EmailNotificationRequest> request =
                 new HttpEntity<>(emailNotificationRequest, headers);
 
         ResponseEntity<EmailNotificationResponse> response =
                 restTemplate.postForEntity(brevoMailAddress, request, EmailNotificationResponse.class);
         EmailNotificationResponse emailNotificationResponse = response.getBody();
+
         return emailNotificationResponse;
+    }
     }
 
 
-}

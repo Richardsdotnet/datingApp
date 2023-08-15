@@ -12,8 +12,8 @@ public interface UserService {
 
     ApiResponse<?> activateUserAccount(String token);
 
-
     GetUserResponse getUserById(Long id);
+
 
     List<GetUserResponse> getAllUsers(int page, int pageSize);
 }
