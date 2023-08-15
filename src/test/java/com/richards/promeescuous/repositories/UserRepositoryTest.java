@@ -7,38 +7,40 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.FactoryBasedNavigableListAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @SpringBootTest
-public class UserRepositoryTest {
+class UserRepositoryTest {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Test
+    public void readByEmail(){
+        userRepository.save(
+                User.builder().
+                        email("coutinho@gmail.com")
+                        .password("12345")
+                        .build());
+
+        userRepository.save(
+                User.builder().
+                        email("test@gmail.com")
+                        .password("12345")
+                        .build());
+
+        userRepository.save(
+                User.builder().
+                        email("dacruz@gmail.com")
+                        .password("12345")
+                        .build());
+
+        Optional<User> foundUser = userRepository.findByEmail("coutinho@gmail.com");
+        assertThat(foundUser).isPresent();
+        assertThat(foundUser).isNotNull();
 
 
-
-        @Autowired
-        private UserRepository userRepository;
-
-        @Test
-        public void readByEmailTest() {
-            userRepository.save(
-                    User.builder().
-                            email("test@email.com")
-                            .password("12345")
-                            .build());
-            userRepository.save(
-                    User.builder().
-                            email("test1@email.com")
-                            .password("12345")
-                            .build());
-
-            userRepository.save(
-                    User.builder().
-                            email("test2@email.com")
-                            .password("12345")
-                            .build());
-
-            Optional<User> foundUser =userRepository.readByEmail("test1@email.com");
-            assertThat(foundUser).isPresent();
-            assertThat(foundUser.get()).isNotNull();
-        }
     }
 
+}
