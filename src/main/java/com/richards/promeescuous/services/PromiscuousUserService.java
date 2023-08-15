@@ -1,27 +1,19 @@
 package com.richards.promeescuous.services;
 
-import africa.semicolon.promeescuous.config.AppConfig;
-import africa.semicolon.promeescuous.dtos.requests.EmailNotificationRequest;
-import africa.semicolon.promeescuous.dtos.requests.Recipient;
-import africa.semicolon.promeescuous.dtos.requests.RegisterUserRequest;
 import africa.semicolon.promeescuous.dtos.responses.ActivateAccountResponse;
-import africa.semicolon.promeescuous.dtos.responses.ApiResponse;
-import africa.semicolon.promeescuous.dtos.responses.GetUserResponse;
-import africa.semicolon.promeescuous.dtos.responses.RegisterUserResponse;
-import africa.semicolon.promeescuous.exceptions.AccountActivationFailedException;
-import africa.semicolon.promeescuous.exceptions.UserNotFoundException;
-import africa.semicolon.promeescuous.models.Address;
-import africa.semicolon.promeescuous.models.User;
-import africa.semicolon.promeescuous.repositories.UserRepository;
 import com.richards.promeescuous.config.AppConfig;
 import com.richards.promeescuous.dtos.requests.EmailNotificationRequest;
+import com.richards.promeescuous.dtos.requests.Recipient;
+import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
 import com.richards.promeescuous.dtos.responses.ApiResponse;
+import com.richards.promeescuous.dtos.responses.GetUserResponse;
 import com.richards.promeescuous.dtos.responses.RegisterUserResponse;
 import com.richards.promeescuous.exceptions.AccountActivationFailedException;
 import com.richards.promeescuous.exceptions.UserNotFoundException;
 import com.richards.promeescuous.models.Address;
 import com.richards.promeescuous.models.User;
 import com.richards.promeescuous.repositories.UserRepository;
+import com.richards.promeescuous.utils.JwtUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -37,9 +29,9 @@ import static africa.semicolon.promeescuous.dtos.responses.ResponseMessage.ACCOU
 import static africa.semicolon.promeescuous.dtos.responses.ResponseMessage.USER_REGISTRATION_SUCCESSFUL;
 import static africa.semicolon.promeescuous.exceptions.ExceptionMessage.*;
 import static africa.semicolon.promeescuous.utils.AppUtil.*;
-import static africa.semicolon.promeescuous.utils.JwtUtil.extractEmailFrom;
-import static africa.semicolon.promeescuous.utils.JwtUtil.isValidJwt;
 import static com.richards.promeescuous.exceptions.ExceptionMessage.*;
+import static com.richards.promeescuous.utils.AppUtil.*;
+import static com.richards.promeescuous.utils.JwtUtil.isValidJwt;
 
 @Repository
 @AllArgsConstructor
@@ -49,24 +41,25 @@ public class PromiscuousUserService implements UserService{
     private final MailService mailService;
     private final AppConfig appConfig;
 
+
+
+
     @Override
-    public RegisterUserResponse register(RegisterUserResponse registerUserRequest) {
+    public RegisterUserResponse register(RegisterUserRequest registerUserRequest) {
         String email = registerUserRequest.getEmail();
         String password = registerUserRequest.getPassword();
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
         user.setAddress(new Address());
-        User savedUser = userRepository.save(user);
+        User savedUser = userRepository;
         EmailNotificationRequest request = buildEmailRequest(savedUser);
         mailService.send(request);
         RegisterUserResponse registerUserResponse = new RegisterUserResponse();
         registerUserResponse.setMessage(USER_REGISTRATION_SUCCESSFUL.name());
         return registerUserResponse;
+
     }
-
-
-
 
     @Override
     public ApiResponse<?> activateUserAccount(String token) {
@@ -113,7 +106,7 @@ public class PromiscuousUserService implements UserService{
 
 
     private ApiResponse<?> activateAccount(String token) {
-        String email = extractEmailFrom(token);
+        String email = JwtUtil.extractEmailFrom(token);
         Optional<User> user = userRepository.readByEmail(email);
         User foundUser = user.orElseThrow(()->new UserNotFoundException(
                 String.format(USER_WITH_EMAIL_NOT_FOUND_EXCEPTION.getMessage(), email)

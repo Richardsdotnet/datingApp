@@ -1,9 +1,9 @@
 package com.richards.promeescuous.services;
 
 
-import africa.semicolon.promeescuous.dtos.responses.GetUserResponse;
 import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
 import com.richards.promeescuous.dtos.responses.ApiResponse;
+import com.richards.promeescuous.dtos.responses.GetUserResponse;
 import com.richards.promeescuous.dtos.responses.RegisterUserResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;

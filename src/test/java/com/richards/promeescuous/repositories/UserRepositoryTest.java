@@ -1,8 +1,14 @@
 package com.richards.promeescuous.repositories;
 
+import com.richards.promeescuous.models.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.FactoryBasedNavigableListAssert.assertThat;
+
 @SpringBootTest
 public class UserRepositoryTest {
 
@@ -35,4 +41,4 @@ public class UserRepositoryTest {
             assertThat(foundUser.get()).isNotNull();
         }
     }
-}
+
