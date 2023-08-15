@@ -24,14 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static africa.semicolon.promeescuous.dto.response.ResponseMessage.ACCOUNT_ACTIVATION_SUCCESSFUL;
-import static africa.semicolon.promeescuous.dto.response.ResponseMessage.USER_REGISTRATION_SUCCESSFUL;
-import static africa.semicolon.promeescuous.exception.ExceptionMessage.*;
-import static africa.semicolon.promeescuous.utils.AppUtils.*;
-import static africa.semicolon.promeescuous.utils.JwtUtils.validateToken;
+import static com.richards.promeescuous.dtos.responses.ResponseMessage.ACCOUNT_ACTIVATION_SUCCESSFUL;
+import static com.richards.promeescuous.dtos.responses.ResponseMessage.USER_REGISTRATION_SUCCESSFUL;
 import static com.richards.promeescuous.exceptions.ExceptionMessage.*;
-import static com.richards.promeescuous.utils.AppUtil.*;
-import static com.richards.promeescuous.utils.JwtUtil.extractEmailFrom;
+import static com.richards.promeescuous.utils.AppUtils.*;
+import static com.richards.promeescuous.utils.JwtUtils.*;
 
 @Service
 @AllArgsConstructor
@@ -54,6 +51,7 @@ public class PromiscuousUserService implements UserService{
         user.setAddress(new Address());
         User savedUser = userRepository.save(user);
         EmailNotificationRequest request = buildEmailRequest(savedUser);
+        log.info("email:::{}",request);
         mailServices.send(request);
         RegisterUserResponse registerUserResponse = new RegisterUserResponse();
         registerUserResponse.setMessage(USER_REGISTRATION_SUCCESSFUL.name());
@@ -64,7 +62,7 @@ public class PromiscuousUserService implements UserService{
     public ApiResponse<?> activateUserAccount(String token) {
         boolean isTestToken = token.equals(appConfig.getTestToken());
         if(isTestToken) return activateTestAccount();
-        boolean isValidJwt = validateToken(token);
+        boolean isValidJwt = isValidateToken(token);
 
         if (isValidJwt) return activateAccount(token);
         throw new AccountActivationFailedException(ACCOUNT_ACTIVATION_FAILED_EXCEPTION.getMessage());

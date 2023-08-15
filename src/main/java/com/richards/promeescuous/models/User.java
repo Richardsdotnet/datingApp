@@ -23,7 +23,7 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
     @Enumerated(value = EnumType.STRING)
-    private Role role;
+    private Role authority;
     private String firstName;
 
     private String lastName;

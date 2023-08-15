@@ -20,7 +20,7 @@ public class JwtUtils {
         return token;
     }
 
-    public static boolean validateToken(String token){
+    public static boolean isValidateToken(String token){
         JWTVerifier verifier = JWT.require(Algorithm.HMAC512("secret"))
                 .withIssuer(APP_NAME)
                 .withClaimPresence("user")

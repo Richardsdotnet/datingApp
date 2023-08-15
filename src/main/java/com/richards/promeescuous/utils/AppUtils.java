@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static com.richards.promeescuous.utils.JwtUtil.generateToken;
+import static com.richards.promeescuous.utils.JwtUtils.generateToken;
 
 
 public class AppUtils {
@@ -21,7 +21,7 @@ public class AppUtils {
 
     public static final String BLANK_SPACE = " ";
 
-    private static final String MAIL_TEMPLATE_LOCATION = "C:\\Users\\Admin\\promeescuous\\src\\main\\resources\\templates\\index.html";
+    private static final String MAIL_TEMPLATE_LOCATION = "C:\\Users\\PC\\Desktop\\prom-scous\\src\\main\\resources\\templates\\index.html";
 
     private static final String EMPTY_STRING = "";
 
