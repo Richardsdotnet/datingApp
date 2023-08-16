@@ -123,7 +123,7 @@ public class UserServicesTest {
         GetUserResponse userResponse = userServices.getUserById(500L);
 
         String fullName = userResponse.getFullName();
-        String expectedFullName = new  StringBuilder()
+        String expectedFullName = new   StringBuilder()
                 .append(updateUserRequest.getFirstName())
                 .append(BLANK_SPACE)
                 .append(updateUserRequest.getLastName()).toString();

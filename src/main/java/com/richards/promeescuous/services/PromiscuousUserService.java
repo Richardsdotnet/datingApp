@@ -1,10 +1,7 @@
 package com.richards.promeescuous.services;
 
 import com.richards.promeescuous.config.AppConfig;
-import com.richards.promeescuous.dtos.requests.EmailNotificationRequest;
-import com.richards.promeescuous.dtos.requests.LoginRequest;
-import com.richards.promeescuous.dtos.requests.Recipient;
-import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
+import com.richards.promeescuous.dtos.requests.*;
 import com.richards.promeescuous.dtos.responses.*;
 import com.richards.promeescuous.exceptions.AccountActivationFailedException;
 import com.richards.promeescuous.exceptions.BadCredentialsExceptions;
@@ -79,13 +76,13 @@ public class PromiscuousUserService implements UserService{
         User user = found.orElseThrow(
                 ()-> new UserNotFoundException(USER_NOT_FOUND_EXCEPTION.getMessage())
         );
-        GetUserResponse getUserResponse = buildGetUserResponse(user);
+       GetUserResponse getUserResponse = buildGetUserResponse(user);
         return getUserResponse;
     }
 
     @Override
     public List<GetUserResponse> getAllUsers(int page, int pageSize) {
-        List<GetUserResponse.GetUserResponse> users = new ArrayList<>();
+        List<GetUserResponse> users = new ArrayList<>();
         Pageable pageable = buildPageRequest(page, pageSize);
         Page<User> usersPage = userRepository.findAll(pageable);
         List<User> foundUsers = usersPage.getContent();
@@ -115,6 +112,18 @@ public class PromiscuousUserService implements UserService{
 
         }
 
+    @Override
+    public UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest, Long id) {
+        User user = findById(id);
+        return null;
+    }
+
+    private User findById(Long id){
+        Optional<User> foundUser = userRepository.findById(id);
+        User user = foundUser.orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND_EXCEPTION.getMessage()));
+        return user;
+    }
+
     private LoginResponse buildLoginResponse(String email) {
         String accessToken = generateToken(email);
         LoginResponse loginResponse = new LoginResponse();
@@ -141,7 +150,7 @@ public class PromiscuousUserService implements UserService{
 
         foundUser.setActive(true);
         User savedUser = userRepository.save(foundUser);
-        GetUserResponse.GetUserResponse userResponse = buildGetUserResponse(savedUser);
+        GetUserResponse userResponse = buildGetUserResponse(savedUser);
         var activateUserResponse = buildActivationUserResponse(userResponse);
         return ApiResponse.builder().data(activateUserResponse).build();
 

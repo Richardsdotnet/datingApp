@@ -23,4 +23,6 @@ public interface UserService {
     LoginResponse login(LoginRequest loginRequest) throws BadCredentialsExceptions;
 
     UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest);
+
+    UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest, Long id);
 }
