@@ -2,6 +2,7 @@ package com.richards.promeescuous.services;
 
 import com.richards.promeescuous.dtos.requests.LoginRequest;
 import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
+import com.richards.promeescuous.dtos.requests.UpdateRequest;
 import com.richards.promeescuous.dtos.responses.ApiResponse;
 import com.richards.promeescuous.dtos.responses.GetUserResponse;
 import com.richards.promeescuous.dtos.responses.LoginResponse;
@@ -14,12 +15,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.assertj.core.api.InstanceOfAssertFactories.PATH;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.testng.reporters.jq.BasePanel.C;
+import static sun.jvm.hotspot.debugger.x86.X86ThreadContext.PC;
 
 @SpringBootTest
 @Slf4j
@@ -97,6 +107,21 @@ public class UserServicesTest {
         assertThatThrownBy(() -> userServices.login(loginRequest))
                 .isInstanceOf(BadCredentialsExceptions.class);
 
+
+    }
+
+    @Test
+    public  void testThatUserCanUpdateAccount(){
+        UpdateRequest updateRequest = new UpdateRequest();
+        updateRequest.setId(500L);
+        updateRequest.setFirstName("Richie");
+        updateRequest.setDateOfBirth(LocalDate.of(2000, Month.APRIL.ordinal(),25));
+        updateRequest.setProfileImages();
+
+    }
+
+    private MultipartFile getTestImage(){
+        Path path = Paths.get("C:\\Users\\PC\\Desktop\\prom-scous\\src\\test\\resources\\images\\creative-logo.jpg");
 
     }
 

@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
+
 @Entity
 @Setter
 @Getter
@@ -36,6 +38,9 @@ public class User {
     private String phoneNumber;
     @Column(nullable = false)
     private String password;
+
+    @ElementCollection
+    private Set<Interest> interests;
 
     private boolean isActive;
 
