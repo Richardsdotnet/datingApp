@@ -5,6 +5,7 @@ import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
 import com.richards.promeescuous.dtos.responses.ApiResponse;
 import com.richards.promeescuous.dtos.responses.GetUserResponse;
 import com.richards.promeescuous.dtos.responses.LoginResponse;
+import com.richards.promeescuous.exceptions.BadCredentialsExceptions;
 import com.richards.promeescuous.repositories.AddressRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -17,6 +18,7 @@ import org.springframework.test.context.jdbc.Sql;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
@@ -73,7 +75,7 @@ public class UserServicesTest {
     }
 
     @Test
-    public void testThatUsersCanLogin(){
+    public void testThatUsersCanLogin() throws BadCredentialsExceptions {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail("test@email.com");
         loginRequest.setPassword("password");
@@ -84,6 +86,18 @@ public class UserServicesTest {
 
         String accessToken = response.getAccessToken();
         assertThat(accessToken).isNotNull();
+    }
+
+    @Test
+    public void testThatExceptionIsThrownWhenUserWhenUserAuthenticatesWithBadCredentials()  {
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail("test@email.com");
+        loginRequest.setPassword("bad_password");
+
+        assertThatThrownBy(() -> userServices.login(loginRequest))
+                .isInstanceOf(BadCredentialsExceptions.class);
+
+
     }
 
 }
