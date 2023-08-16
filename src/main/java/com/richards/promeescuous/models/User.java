@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @Entity
@@ -30,7 +31,7 @@ public class User {
 
     private String lastName;
 
-    private LocalDate createdAt;
+    private String createdAt;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -46,6 +47,8 @@ public class User {
 
     @PrePersist
     public void setCreatedDate() {
-        createdAt = LocalDate.now();
+        var currentTime= LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyy HH:mm:ss");
+        createdAt = currentTime.format(formatter);
     }
 }

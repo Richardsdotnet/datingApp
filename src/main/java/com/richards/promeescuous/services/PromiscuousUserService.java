@@ -2,8 +2,12 @@ package com.richards.promeescuous.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.TextNode;
+import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
+import com.github.fge.jsonpatch.JsonPatchOperation;
+import com.github.fge.jsonpatch.ReplaceOperation;
 import com.richards.promeescuous.config.AppConfig;
 import com.richards.promeescuous.dtos.requests.*;
 import com.richards.promeescuous.dtos.responses.*;
@@ -21,7 +25,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +40,7 @@ import static com.richards.promeescuous.utils.JwtUtils.*;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class PromiscuousUserService implements UserService{
+public class PromiscuousUserService implements UserService {
     private final UserRepository userRepository;
 
     private final MailService mailServices;
@@ -52,7 +58,7 @@ public class PromiscuousUserService implements UserService{
         user.setAddress(new Address());
         User savedUser = userRepository.save(user);
         EmailNotificationRequest request = buildEmailRequest(savedUser);
-        log.info("email:::{}",request);
+        log.info("email:::{}", request);
         mailServices.send(request);
         RegisterUserResponse registerUserResponse = new RegisterUserResponse();
         registerUserResponse.setMessage(USER_REGISTRATION_SUCCESSFUL.name());
@@ -60,14 +66,14 @@ public class PromiscuousUserService implements UserService{
     }
 
     @Override
-    public void deleteAll(){
+    public void deleteAll() {
         userRepository.deleteAll();
     }
 
     @Override
     public ApiResponse<?> activateUserAccount(String token) {
         boolean isTestToken = token.equals(appConfig.getTestToken());
-        if(isTestToken) return activateTestAccount();
+        if (isTestToken) return activateTestAccount();
         boolean isValidJwt = isValidateToken(token);
 
         if (isValidJwt) return activateAccount(token);
@@ -79,9 +85,9 @@ public class PromiscuousUserService implements UserService{
     public GetUserResponse getUserById(Long id) {
         Optional<User> found = userRepository.findById(id);
         User user = found.orElseThrow(
-                ()-> new UserNotFoundException(USER_NOT_FOUND_EXCEPTION.getMessage())
+                () -> new UserNotFoundException(USER_NOT_FOUND_EXCEPTION.getMessage())
         );
-       GetUserResponse getUserResponse = buildGetUserResponse(user);
+        GetUserResponse getUserResponse = buildGetUserResponse(user);
         return getUserResponse;
     }
 
@@ -98,7 +104,7 @@ public class PromiscuousUserService implements UserService{
 //        }
 //        return users
         return foundUsers.stream()
-                .map(PromiscuousUserService ::buildGetUserResponse)
+                .map(PromiscuousUserService::buildGetUserResponse)
                 .toList();
     }
 
@@ -111,31 +117,31 @@ public class PromiscuousUserService implements UserService{
         User user = foundUser.orElseThrow(() -> new UserNotFoundException(
                 String.format(USER_WITH_EMAIL_NOT_FOUND_EXCEPTION.getMessage(), email)
         ));
-        boolean isValidPassword = matches(user.getPassword(),password);
-        if(isValidPassword) return buildLoginResponse(email);
-        throw new BadCredentialsExceptions(INVALID_CREDENTIALS_EXCEPTION.getMessage() );
+        boolean isValidPassword = matches(user.getPassword(), password);
+        if (isValidPassword) return buildLoginResponse(email);
+        throw new BadCredentialsExceptions(INVALID_CREDENTIALS_EXCEPTION.getMessage());
 
+    }
+
+    @Override
+
+    public UpdateUserResponse updateUserProfile(JsonPatch jsonPatch, Long id) {
+        ObjectMapper mapper = new ObjectMapper();
+        User user = findUserById(id);
+        JsonNode node = mapper.convertValue(user, JsonNode.class);
+        try {
+            JsonNode updatedNode = jsonPatch.apply(node);
+            User updatedUser = mapper.convertValue(updatedNode, User.class);
+            updatedUser = userRepository.save(updatedUser);
+            UpdateUserResponse response = new UpdateUserResponse();
+            response.setMessage("update successful");
+            return response;
+
+        } catch (JsonPatchException exception) {
+            throw new PromiscuousBaseException(":(");
         }
 
-        @Override
-
-        public UpdateUserResponse updateUserProfile(JsonPatch jsonPatch, Long id){
-        ObjectMapper mapper = new ObjectMapper();
-        User user = findById(id);
-            JsonNode node = mapper.convertValue(user, JsonNode.class);
-            try{
-                JsonNode updatedNode =jsonPatch.apply(node);
-                User updatedUser = mapper.convertValue(updatedNode, User.class);
-                updatedUser = userRepository.save(updatedUser);
-                UpdateUserResponse response = new UpdateUserResponse();
-                response.setMessage("update successful");
-                return response;
-
-            } catch (JsonPatchException exception) {
-                throw new PromiscuousBaseException(":(");
-            }
-
-            //   private JsonPatch buildUpdatePatch(UpdateUserRequest updateUserRequest) {
+        //   private JsonPatch buildUpdatePatch(UpdateUserRequest updateUserRequest) {
 //        JsonPatch patch = List.of(
 //                new ReplaceOperation(new JsonPointer("/firstname"), new TextNode("Joey"))
 //        );
@@ -143,20 +149,43 @@ public class PromiscuousUserService implements UserService{
 //    }
 
 
-        }
-
+    }
 
 
     @Override
     public UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest, Long id) {
-        User user = findById(id);
+        User user = findUserById(id);
 
         return null;
     }
 
+    private JsonPatch buildUpdatePatch(UpdateUserRequest updateUserRequest) {
+        Field[] fields = updateUserRequest.getClass().getFields();
+        List<Field> fieldsToUpdate = Arrays.stream(fields)
+                .filter(field -> field != null)
+                .toList();
+        List<JsonPatchOperation> operations = new ArrayList<>();
+
+        fieldsToUpdate.forEach(field -> {
+            try {
+                JsonPointer pointer = new JsonPointer("/" + field.getName());
+
+                String value = field.get(field.getName()).toString();
+                TextNode node = new TextNode(value);
+                ReplaceOperation operation = new ReplaceOperation(pointer, node);
+                operations.add(operation);
+            } catch (Exception exception) {
+                throw new RuntimeException(exception);
+
+            }
+
+        });
+    }
 
 
-    private User findById(Long id){
+
+
+    private User findUserById(Long id){
         Optional<User> foundUser = userRepository.findById(id);
         return foundUser.orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND_EXCEPTION.getMessage()));
     }
