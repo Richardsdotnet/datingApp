@@ -1,10 +1,15 @@
 package com.richards.promeescuous.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import com.richards.promeescuous.config.AppConfig;
 import com.richards.promeescuous.dtos.requests.*;
 import com.richards.promeescuous.dtos.responses.*;
 import com.richards.promeescuous.exceptions.AccountActivationFailedException;
 import com.richards.promeescuous.exceptions.BadCredentialsExceptions;
+import com.richards.promeescuous.exceptions.PromiscuousBaseException;
 import com.richards.promeescuous.exceptions.UserNotFoundException;
 import com.richards.promeescuous.models.Address;
 import com.richards.promeescuous.models.User;
@@ -112,11 +117,42 @@ public class PromiscuousUserService implements UserService{
 
         }
 
+        @Override
+
+        public UpdateUserResponse updateUserProfile(JsonPatch jsonPatch, Long id){
+        ObjectMapper mapper = new ObjectMapper();
+        User user = findById(id);
+            JsonNode node = mapper.convertValue(user, JsonNode.class);
+            try{
+                JsonNode updatedNode =jsonPatch.apply(node);
+                User updatedUser = mapper.convertValue(updatedNode, User.class);
+                updatedUser = userRepository.save(updatedUser);
+                UpdateUserResponse response = new UpdateUserResponse();
+                response.setMessage("update successful");
+                return response;
+
+            } catch (JsonPatchException exception) {
+                throw new PromiscuousBaseException(":(");
+            }
+
+
+        }
+
+
+
     @Override
     public UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest, Long id) {
         User user = findById(id);
+
         return null;
     }
+
+//    private JsonPatch buildUpdatePatch(UpdateUserRequest updateUserRequest) {
+//        JsonPatch patch = List.of(
+//                new ReplaceOperation(new JsonPointer("/firstname"), new TextNode("Joey"))
+//        );
+//        return null;
+//    }
 
     private User findById(Long id){
         Optional<User> foundUser = userRepository.findById(id);
@@ -157,15 +193,15 @@ public class PromiscuousUserService implements UserService{
 
     }
 
-    private static ActivateAccountResponse buildActivationUserResponse(GetUserResponse.GetUserResponse userResponse){
+    private static ActivateAccountResponse buildActivationUserResponse(GetUserResponse userResponse){
         return ActivateAccountResponse.builder()
                 .message(ACCOUNT_ACTIVATION_SUCCESSFUL.name())
                 .user(userResponse)
                 .build();
     }
 
-    private static GetUserResponse.GetUserResponse buildGetUserResponse(User savedUser){
-        return GetUserResponse.GetUserResponse.builder()
+    private static GetUserResponse buildGetUserResponse(User savedUser){
+        return GetUserResponse.builder()
                 .id(savedUser.getId())
                 .address(savedUser.getAddress().toString())
                 .fullName(getFullName(savedUser))

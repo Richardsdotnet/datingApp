@@ -135,7 +135,7 @@ public class UserServicesTest {
     private  UpdateUserRequest buildUpdateRequest(){
         Set<String> interests = Set.of("Swimming", "Sports", "Cooking");
         UpdateUserRequest updateRequest = new UpdateUserRequest();
-        updateRequest.setId(500L);
+       // updateRequest.setId(500L);
         updateRequest.setFirstName("Richie");
         updateRequest.setLastName("chris");
         updateRequest.setDateOfBirth(LocalDate.of(2000, Month.APRIL.ordinal(),25));

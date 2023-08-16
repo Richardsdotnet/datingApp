@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 
 public class UpdateUserRequest {
-    private Long id;
+   // private Long id;
     private LocalDate dateOfBirth;
     private String houseNumber;
     private String street;

@@ -1,20 +1,18 @@
 package com.richards.promeescuous.dtos.responses;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 
 public class GetUserResponse {
     private Long id;
     private String email;
     private String fullName;
     private String phoneNumber;
-    private Long address;
+    private String address;
     private String profileImage;
 }

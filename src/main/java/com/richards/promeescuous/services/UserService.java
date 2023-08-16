@@ -1,5 +1,6 @@
 package com.richards.promeescuous.services;
 
+import com.github.fge.jsonpatch.JsonPatch;
 import com.richards.promeescuous.dtos.requests.LoginRequest;
 import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
 import com.richards.promeescuous.dtos.requests.UpdateUserRequest;
@@ -22,7 +23,12 @@ public interface UserService {
 
     LoginResponse login(LoginRequest loginRequest) throws BadCredentialsExceptions;
 
-    UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest);
+   // UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest);
+
+    public UpdateUserResponse updateUserProfile(JsonPatch jsonPatch, Long id);
+
+
+
 
     UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest, Long id);
 }
