@@ -51,7 +51,11 @@ public class AppUtils {
             throw new PromiscuousBaseException(exception.getMessage());
         }
 
+
+
     }
 
-
+public static boolean matches(String first, String second){
+        return first.equals(second);
+}
 }

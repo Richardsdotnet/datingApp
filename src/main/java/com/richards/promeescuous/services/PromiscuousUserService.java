@@ -2,12 +2,10 @@ package com.richards.promeescuous.services;
 
 import com.richards.promeescuous.config.AppConfig;
 import com.richards.promeescuous.dtos.requests.EmailNotificationRequest;
+import com.richards.promeescuous.dtos.requests.LoginRequest;
 import com.richards.promeescuous.dtos.requests.Recipient;
 import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
-import com.richards.promeescuous.dtos.responses.ActivateAccountResponse;
-import com.richards.promeescuous.dtos.responses.ApiResponse;
-import com.richards.promeescuous.dtos.responses.GetUserResponse;
-import com.richards.promeescuous.dtos.responses.RegisterUserResponse;
+import com.richards.promeescuous.dtos.responses.*;
 import com.richards.promeescuous.exceptions.AccountActivationFailedException;
 import com.richards.promeescuous.exceptions.UserNotFoundException;
 import com.richards.promeescuous.models.Address;
@@ -59,6 +57,11 @@ public class PromiscuousUserService implements UserService{
     }
 
     @Override
+    public void deleteAll(){
+        userRepository.deleteAll();
+    }
+
+    @Override
     public ApiResponse<?> activateUserAccount(String token) {
         boolean isTestToken = token.equals(appConfig.getTestToken());
         if(isTestToken) return activateTestAccount();
@@ -94,6 +97,22 @@ public class PromiscuousUserService implements UserService{
         return foundUsers.stream()
                 .map(PromiscuousUserService ::buildGetUserResponse)
                 .toList();
+    }
+
+    @Override
+    public LoginResponse login(LoginRequest loginRequest) {
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
+
+        Optional<User> foundUser = userRepository.readByEmail(email);
+        User user = foundUser.orElseThrow(() -> new UserNotFoundException(
+                String.format(USER_WITH_EMAIL_NOT_FOUND_EXCEPTION.getMessage(), email)
+        ));
+        boolean isValidPassword = matches(user.getPassword(),password);
+        if(isValidPassword){
+            String accessToken = generateToken(email);
+        }
+        return null;
     }
 
     private Pageable buildPageRequest(int page, int pageSize) {

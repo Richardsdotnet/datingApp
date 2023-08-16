@@ -1,12 +1,13 @@
 package com.richards.promeescuous.services;
 
+import com.richards.promeescuous.dtos.requests.LoginRequest;
 import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
 import com.richards.promeescuous.dtos.responses.ApiResponse;
 import com.richards.promeescuous.dtos.responses.GetUserResponse;
-import com.richards.promeescuous.dtos.responses.RegisterUserResponse;
-import com.richards.promeescuous.models.User;
+import com.richards.promeescuous.dtos.responses.LoginResponse;
+import com.richards.promeescuous.repositories.AddressRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,9 +28,14 @@ public class UserServicesTest {
     @Autowired
     private UserService userServices;
 
+    @Autowired
+    private AddressRepository addressRepository;
 
-    @BeforeEach
+
+    @AfterEach
     void setUp() {
+    userServices.deleteAll();
+    addressRepository.deleteAll();
 
     }
 
@@ -46,7 +52,7 @@ public class UserServicesTest {
     @Test
     public void testActivateUserAccount() {
         ApiResponse<?> activateUserAccountResponse =
-                userServices.activateUserAccount("abc1234.erytuuoi.67t75646");
+                userServices.activateUserAccount("abc12345.ersfb.35554");
         assertThat(activateUserAccountResponse).isNotNull();
 
     }
@@ -55,7 +61,7 @@ public class UserServicesTest {
 
     public void getUserByIdTest() {
 
-        GetUserResponse response = userServices.getUserById(1L);
+        GetUserResponse response = userServices.getUserById(500L);
         assertThat(response).isNotNull();
     }
 
@@ -64,4 +70,20 @@ public class UserServicesTest {
         List<GetUserResponse> users = userServices.getAllUsers(1, 5);
         assertThat(users).isNotNull();
         assertThat(users.size()).isEqualTo(5);
-    }}
+    }
+
+    @Test
+    public void testThatUsersCanLogin(){
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail("test@email.com");
+        loginRequest.setPassword("password");
+
+
+        LoginResponse response = userServices.login(loginRequest);
+        assertThat(response).isNotNull();
+
+        String accessToken = response.getAccessToken();
+        assertThat(accessToken).isNotNull();
+    }
+
+}
