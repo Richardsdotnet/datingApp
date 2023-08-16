@@ -6,6 +6,7 @@ import com.richards.promeescuous.dtos.responses.ApiResponse;
 import com.richards.promeescuous.dtos.responses.GetUserResponse;
 import com.richards.promeescuous.dtos.responses.LoginResponse;
 import com.richards.promeescuous.dtos.responses.RegisterUserResponse;
+import com.richards.promeescuous.exceptions.BadCredentialsExceptions;
 
 import java.util.List;
 
@@ -21,5 +22,5 @@ public interface UserService {
 
     List<GetUserResponse> getAllUsers(int page, int pageSize);
 
-    LoginResponse login(LoginRequest loginRequest);
+    LoginResponse login(LoginRequest loginRequest) throws BadCredentialsExceptions;
 }

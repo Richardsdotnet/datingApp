@@ -7,6 +7,7 @@ import com.richards.promeescuous.dtos.requests.Recipient;
 import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
 import com.richards.promeescuous.dtos.responses.*;
 import com.richards.promeescuous.exceptions.AccountActivationFailedException;
+import com.richards.promeescuous.exceptions.BadCredentialsExceptions;
 import com.richards.promeescuous.exceptions.UserNotFoundException;
 import com.richards.promeescuous.models.Address;
 import com.richards.promeescuous.models.User;
@@ -100,7 +101,7 @@ public class PromiscuousUserService implements UserService{
     }
 
     @Override
-    public LoginResponse login(LoginRequest loginRequest) {
+    public LoginResponse login(LoginRequest loginRequest) throws BadCredentialsExceptions {
         String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
 
@@ -109,11 +110,18 @@ public class PromiscuousUserService implements UserService{
                 String.format(USER_WITH_EMAIL_NOT_FOUND_EXCEPTION.getMessage(), email)
         ));
         boolean isValidPassword = matches(user.getPassword(),password);
-        if(isValidPassword){
-            String accessToken = generateToken(email);
+        if(isValidPassword) return buildLoginResponse(email);
+        throw new BadCredentialsExceptions(INVALID_CREDENTIALS_EXCEPTION.getMessage() );
+
         }
-        return null;
+
+    private LoginResponse buildLoginResponse(String email) {
+        String accessToken = generateToken(email);
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setAccessToken(accessToken);
+        return loginResponse;
     }
+
 
     private Pageable buildPageRequest(int page, int pageSize) {
         if (page<1&&pageSize<1)return PageRequest.of(0,10);
