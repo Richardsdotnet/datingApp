@@ -1,9 +1,6 @@
 package com.richards.promeescuous.dtos.requests;
 
-import com.richards.promeescuous.models.Address;
 import com.richards.promeescuous.models.Gender;
-import com.richards.promeescuous.models.Role;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,10 +11,13 @@ import java.util.Set;
 @Setter
 @Getter
 
-public class UpdateRequest {
+public class UpdateUserRequest {
     private Long id;
     private LocalDate dateOfBirth;
-    private Address address;
+    private String houseNumber;
+    private String street;
+    private String state;
+    private String country;
     private Gender gender;
     private String firstName;
     private String lastName;

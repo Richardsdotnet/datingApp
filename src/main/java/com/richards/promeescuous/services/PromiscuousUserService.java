@@ -85,7 +85,7 @@ public class PromiscuousUserService implements UserService{
 
     @Override
     public List<GetUserResponse> getAllUsers(int page, int pageSize) {
-        List<GetUserResponse> users = new ArrayList<>();
+        List<GetUserResponse.GetUserResponse> users = new ArrayList<>();
         Pageable pageable = buildPageRequest(page, pageSize);
         Page<User> usersPage = userRepository.findAll(pageable);
         List<User> foundUsers = usersPage.getContent();
@@ -141,22 +141,22 @@ public class PromiscuousUserService implements UserService{
 
         foundUser.setActive(true);
         User savedUser = userRepository.save(foundUser);
-        GetUserResponse userResponse = buildGetUserResponse(savedUser);
+        GetUserResponse.GetUserResponse userResponse = buildGetUserResponse(savedUser);
         var activateUserResponse = buildActivationUserResponse(userResponse);
         return ApiResponse.builder().data(activateUserResponse).build();
 
 
     }
 
-    private static ActivateAccountResponse buildActivationUserResponse(GetUserResponse userResponse){
+    private static ActivateAccountResponse buildActivationUserResponse(GetUserResponse.GetUserResponse userResponse){
         return ActivateAccountResponse.builder()
                 .message(ACCOUNT_ACTIVATION_SUCCESSFUL.name())
                 .user(userResponse)
                 .build();
     }
 
-    private static GetUserResponse buildGetUserResponse(User savedUser){
-        return GetUserResponse.builder()
+    private static GetUserResponse.GetUserResponse buildGetUserResponse(User savedUser){
+        return GetUserResponse.GetUserResponse.builder()
                 .id(savedUser.getId())
                 .address(savedUser.getAddress().toString())
                 .fullName(getFullName(savedUser))

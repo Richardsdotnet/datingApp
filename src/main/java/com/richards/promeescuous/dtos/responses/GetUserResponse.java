@@ -4,6 +4,7 @@ package com.richards.promeescuous.dtos.responses;
 
 import lombok.*;
 
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -13,6 +14,11 @@ public class GetUserResponse {
     private Long id;
     private String email;
     private String fullName;
-    private String address;
     private String phoneNumber;
+    private Long address;
+    private String profileImage;
+
+
+
+
 }

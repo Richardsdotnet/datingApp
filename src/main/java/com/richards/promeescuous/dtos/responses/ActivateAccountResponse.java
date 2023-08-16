@@ -14,5 +14,5 @@ public class ActivateAccountResponse {
     private String message;
 
 
-    private GetUserResponse user;
+    private GetUserResponse.GetUserResponse user;
 }

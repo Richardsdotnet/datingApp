@@ -2,11 +2,11 @@ package com.richards.promeescuous.services;
 
 import com.richards.promeescuous.dtos.requests.LoginRequest;
 import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
-import com.richards.promeescuous.dtos.requests.UpdateRequest;
+import com.richards.promeescuous.dtos.requests.UpdateUserRequest;
 import com.richards.promeescuous.dtos.responses.ApiResponse;
 import com.richards.promeescuous.dtos.responses.GetUserResponse;
 import com.richards.promeescuous.dtos.responses.LoginResponse;
-import com.richards.promeescuous.dtos.responses.UpdateResponse;
+import com.richards.promeescuous.dtos.responses.UpdateUserResponse;
 import com.richards.promeescuous.exceptions.BadCredentialsExceptions;
 import com.richards.promeescuous.exceptions.PromiscuousBaseException;
 import com.richards.promeescuous.repositories.AddressRepository;
@@ -29,6 +29,7 @@ import java.time.Month;
 import java.util.List;
 import java.util.Set;
 
+import static com.richards.promeescuous.utils.AppUtils.BLANK_SPACE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -114,16 +115,34 @@ public class UserServicesTest {
 
     @Test
     public  void testThatUserCanUpdateAccount(){
-        Set<String> interests= Set.of("Swimming", "Sports", "Cooking");
-        UpdateRequest updateRequest = new UpdateRequest();
+        UpdateUserRequest updateUserRequest = buildUpdateRequest();
+        UpdateUserResponse response = userServices.updateProfile(updateUserRequest);
+
+        assertThat(response).isNotNull();
+
+        GetUserResponse userResponse = userServices.getUserById(500L);
+
+        String fullName = userResponse.getFullName();
+        String expectedFullName = new  StringBuilder()
+                .append(updateUserRequest.getFirstName())
+                .append(BLANK_SPACE)
+                .append(updateUserRequest.getLastName()).toString();
+        assertThat(fullName).isEqualTo(expectedFullName);
+
+
+    }
+
+    private  UpdateUserRequest buildUpdateRequest(){
+        Set<String> interests = Set.of("Swimming", "Sports", "Cooking");
+        UpdateUserRequest updateRequest = new UpdateUserRequest();
         updateRequest.setId(500L);
         updateRequest.setFirstName("Richie");
+        updateRequest.setLastName("chris");
         updateRequest.setDateOfBirth(LocalDate.of(2000, Month.APRIL.ordinal(),25));
         MultipartFile testImage = getTestImage();
         updateRequest.setProfileImages(testImage);
         updateRequest.setInterests(interests);
-        UpdateResponse updateResponse = new UpdateResponse();
-
+        return updateRequest;
     }
 
     private MultipartFile getTestImage(){
