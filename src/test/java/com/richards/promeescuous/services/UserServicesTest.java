@@ -6,6 +6,7 @@ import com.richards.promeescuous.dtos.requests.UpdateRequest;
 import com.richards.promeescuous.dtos.responses.ApiResponse;
 import com.richards.promeescuous.dtos.responses.GetUserResponse;
 import com.richards.promeescuous.dtos.responses.LoginResponse;
+import com.richards.promeescuous.dtos.responses.UpdateResponse;
 import com.richards.promeescuous.exceptions.BadCredentialsExceptions;
 import com.richards.promeescuous.exceptions.PromiscuousBaseException;
 import com.richards.promeescuous.repositories.AddressRepository;
@@ -26,6 +27,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -112,12 +114,15 @@ public class UserServicesTest {
 
     @Test
     public  void testThatUserCanUpdateAccount(){
+        Set<String> interests= Set.of("Swimming", "Sports", "Cooking");
         UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.setId(500L);
         updateRequest.setFirstName("Richie");
         updateRequest.setDateOfBirth(LocalDate.of(2000, Month.APRIL.ordinal(),25));
         MultipartFile testImage = getTestImage();
         updateRequest.setProfileImages(testImage);
+        updateRequest.setInterests(interests);
+        UpdateResponse updateResponse = new UpdateResponse();
 
     }
 
