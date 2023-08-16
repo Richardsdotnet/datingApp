@@ -18,17 +18,11 @@ public interface UserService {
 
     GetUserResponse getUserById(Long id);
 
-
     List<GetUserResponse> getAllUsers(int page, int pageSize);
 
     LoginResponse login(LoginRequest loginRequest) throws BadCredentialsExceptions;
 
-   // UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest);
-
-    public UpdateUserResponse updateUserProfile(JsonPatch jsonPatch, Long id);
-
-
-
+    UpdateUserResponse updateUserProfile(JsonPatch jsonPatch, Long id);
 
     UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest, Long id);
 }

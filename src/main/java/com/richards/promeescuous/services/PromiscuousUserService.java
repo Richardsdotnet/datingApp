@@ -135,6 +135,13 @@ public class PromiscuousUserService implements UserService{
                 throw new PromiscuousBaseException(":(");
             }
 
+            //   private JsonPatch buildUpdatePatch(UpdateUserRequest updateUserRequest) {
+//        JsonPatch patch = List.of(
+//                new ReplaceOperation(new JsonPointer("/firstname"), new TextNode("Joey"))
+//        );
+//        return null;
+//    }
+
 
         }
 
@@ -147,17 +154,11 @@ public class PromiscuousUserService implements UserService{
         return null;
     }
 
-//    private JsonPatch buildUpdatePatch(UpdateUserRequest updateUserRequest) {
-//        JsonPatch patch = List.of(
-//                new ReplaceOperation(new JsonPointer("/firstname"), new TextNode("Joey"))
-//        );
-//        return null;
-//    }
+
 
     private User findById(Long id){
         Optional<User> foundUser = userRepository.findById(id);
-        User user = foundUser.orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND_EXCEPTION.getMessage()));
-        return user;
+        return foundUser.orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND_EXCEPTION.getMessage()));
     }
 
     private LoginResponse buildLoginResponse(String email) {

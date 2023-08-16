@@ -116,7 +116,7 @@ public class UserServicesTest {
     @Test
     public  void testThatUserCanUpdateAccount(){
         UpdateUserRequest updateUserRequest = buildUpdateRequest();
-        UpdateUserResponse response = userServices.updateProfile(updateUserRequest);
+        UpdateUserResponse response = userServices.updateProfile(updateUserRequest, 500L);
 
         assertThat(response).isNotNull();
 

@@ -3,7 +3,6 @@ package com.richards.promeescuous.controllers;
 
 import com.github.fge.jsonpatch.JsonPatch;
 import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
-import com.richards.promeescuous.dtos.requests.UpdateUserRequest;
 import com.richards.promeescuous.dtos.responses.GetUserResponse;
 import com.richards.promeescuous.dtos.responses.RegisterUserResponse;
 import com.richards.promeescuous.dtos.responses.UpdateUserResponse;
