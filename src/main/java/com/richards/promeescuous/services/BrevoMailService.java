@@ -29,10 +29,10 @@ public class BrevoMailService implements MailService{
 
         ResponseEntity<EmailNotificationResponse> response =
                 restTemplate.postForEntity(brevoMailAddress, request, EmailNotificationResponse.class);
-        EmailNotificationResponse emailNotificationResponse = response.getBody();
 
-        return emailNotificationResponse;
+        return response.getBody();
     }
+
     }
 
 

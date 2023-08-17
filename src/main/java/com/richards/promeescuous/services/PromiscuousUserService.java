@@ -141,14 +141,6 @@ public class PromiscuousUserService implements UserService {
             throw new PromiscuousBaseException(":(");
         }
 
-        //   private JsonPatch buildUpdatePatch(UpdateUserRequest updateUserRequest) {
-//        JsonPatch patch = List.of(
-//                new ReplaceOperation(new JsonPointer("/firstname"), new TextNode("Joey"))
-//        );
-//        return null;
-//    }
-
-
     }
 
 
@@ -160,27 +152,28 @@ public class PromiscuousUserService implements UserService {
     }
 
     private JsonPatch buildUpdatePatch(UpdateUserRequest updateUserRequest) {
-        Field[] fields = updateUserRequest.getClass().getFields();
-        List<Field> fieldsToUpdate = Arrays.stream(fields)
-                .filter(field -> field != null)
-                .toList();
-        List<JsonPatchOperation> operations = new ArrayList<>();
+            JsonPatch patch;
+            Field[] fields = updateUserRequest.getClass().getDeclaredFields();
 
-        fieldsToUpdate.forEach(field -> {
-            try {
-                JsonPointer pointer = new JsonPointer("/" + field.getName());
+            List<ReplaceOperation> operations=Arrays.stream(fields)
+                    .filter(field -> field!=null)
+                    .map(field->{
+                        try {
+                            String path = "/"+field.getName();
+                            JsonPointer pointer = new JsonPointer(path);
+                            String value = field.get(field.getName()).toString();
+                            TextNode node = new TextNode(value);
+                            ReplaceOperation operation = new ReplaceOperation(pointer, node);
+                            return operation;
+                        } catch (Exception exception) {
+                            throw new RuntimeException(exception);
+                        }
+                    }).toList();
 
-                String value = field.get(field.getName()).toString();
-                TextNode node = new TextNode(value);
-                ReplaceOperation operation = new ReplaceOperation(pointer, node);
-                operations.add(operation);
-            } catch (Exception exception) {
-                throw new RuntimeException(exception);
+            List<JsonPatchOperation> patchOperations = new ArrayList<>(operations);
+            return new JsonPatch(patchOperations);
+}
 
-            }
-
-        });
-    }
 
 
 
