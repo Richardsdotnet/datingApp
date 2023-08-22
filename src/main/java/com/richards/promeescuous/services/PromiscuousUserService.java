@@ -16,6 +16,7 @@ import com.richards.promeescuous.exceptions.BadCredentialsExceptions;
 import com.richards.promeescuous.exceptions.PromiscuousBaseException;
 import com.richards.promeescuous.exceptions.UserNotFoundException;
 import com.richards.promeescuous.models.Address;
+import com.richards.promeescuous.models.Interest;
 import com.richards.promeescuous.models.User;
 import com.richards.promeescuous.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -26,10 +27,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Stream;
+
 
 import static com.richards.promeescuous.dtos.responses.ResponseMessage.ACCOUNT_ACTIVATION_SUCCESSFUL;
 import static com.richards.promeescuous.dtos.responses.ResponseMessage.USER_REGISTRATION_SUCCESSFUL;
@@ -163,7 +163,8 @@ public class PromiscuousUserService implements UserService {
             user = objectMapper.convertValue(updatedNode, User.class);
             // 4. save updated user from step 3 in the DB
             userRepository.save(user);
-            return new UpdateUserResponse(PROFILE_UPDATE_SUCCESSFUL);
+            return new UpdateUserResponse(PROFILE_UPDATE_SUCCESSFUL.name());
+           // return new UpdateUserResponse(PROFILE_UPDATE_SUCCESSFUL);
 
         }catch (JsonsPatchException | JsonPatchException exception){
             throw new PromiscuousBaseException((exception.getMessage()));
@@ -208,8 +209,14 @@ public class PromiscuousUserService implements UserService {
     @Override
     public UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest, Long id) {
         User user = findUserById(id);
+        JsonPatch updatePatch = buildUpdatePatch(updateUserRequest);
+        return applyPatch(updatePatch, user);
+    }
 
-        return null;
+    private static Set<Interest> parseInterestForm(Set<String> interests){
+      Set<Interest> userInterests = interests.stream()
+
+
     }
 
 
