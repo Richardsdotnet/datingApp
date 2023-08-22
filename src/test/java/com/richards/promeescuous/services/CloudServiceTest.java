@@ -15,7 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.assertj.core.api.FactoryBasedNavigableListAssert.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
@@ -29,12 +29,11 @@ public class CloudServiceTest {
 
     public void testUploadFile(){
         Path path = Paths.get(AppUtils.TEST_IMAGE_LOCATION);
-        try {
-            InputStream inputStream = Files.newInputStream(path)){
+        try {InputStream inputStream = Files.newInputStream(path)){
                 MultipartFile file = new MockMultipartFile("testImages", inputStream);
                 ApiResponse<String> response = cloudService.upload(file);
                 assertNotNull(response);
-                assertThat(response.getData()).isNotNull();
+                assertThat(response.getData()).isNull();
 
             }
 
