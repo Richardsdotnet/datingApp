@@ -29,11 +29,9 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
-import static com.richards.promeescuous.dtos.responses.ResponseMessage.ACCOUNT_ACTIVATION_SUCCESSFUL;
-import static com.richards.promeescuous.dtos.responses.ResponseMessage.USER_REGISTRATION_SUCCESSFUL;
+import static com.richards.promeescuous.dtos.responses.ResponseMessage.*;
 import static com.richards.promeescuous.exceptions.ExceptionMessage.*;
 import static com.richards.promeescuous.utils.AppUtils.*;
 import static com.richards.promeescuous.utils.JwtUtils.*;
@@ -124,34 +122,25 @@ public class PromiscuousUserService implements UserService {
 
     }
 
-  //  @Override
-
-//    public UpdateUserResponse updateUserProfile(JsonPatch jsonPatch, Long id) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        User user = findUserById(id);
-//        JsonNode node = mapper.convertValue(user, JsonNode.class);
-//        try {
-//            JsonNode updatedNode = jsonPatch.apply(node);
-//            User updatedUser = mapper.convertValue(updatedNode, User.class);
-//            updatedUser = userRepository.save(updatedUser);
-//            UpdateUserResponse response = new UpdateUserResponse();
-//            response.setMessage("update successful");
-//            return response;
-//
-//        } catch (JsonPatchException exception) {
-//            throw new PromiscuousBaseException(":(");
-//        }
-//
-//    }
     @Override
-    public UpdateUserResponse updateUserProfile(UpdateUserRequest updateUserRequest, Long id){
+    public UpdateUserResponse updateUserProfile(JsonPatch jsonPatch, Long id) {
+
+
+        return null;
+    }
+
+    @Override
+    public UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest, Long id) {
         User user = findUserById(id);
+        Set<String> userInterests = updateUserRequest.getInterests();
+        Set<Interest> interests = parseInterestForm(userInterests);
+        user.setInterests(interests);
         JsonPatch updatePatch = buildUpdatePatch(updateUserRequest);
         return applyPatch(updatePatch, user);
 
-
-
     }
+
+
 
     private UpdateUserResponse applyPatch(JsonPatch updatePatch, User user) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -164,10 +153,10 @@ public class PromiscuousUserService implements UserService {
             user = objectMapper.convertValue(updatedNode, User.class);
             // 4. save updated user from step 3 in the DB
             userRepository.save(user);
-            return new UpdateUserResponse(PROFILE_UPDATE_SUCCESSFUL.name());
+            return  new UpdateUserResponse(PROFILE_UPDATE_SUCCESSFUL.name());
            // return new UpdateUserResponse(PROFILE_UPDATE_SUCCESSFUL);
 
-        }catch (JsonsPatchException | JsonPatchException exception){
+        }catch ( JsonPatchException exception){
             throw new PromiscuousBaseException((exception.getMessage()));
         }
 
@@ -177,47 +166,46 @@ public class PromiscuousUserService implements UserService {
     private JsonPatch buildUpdatePatch(UpdateUserRequest updateUserRequest) {
         Field[] fields = updateUserRequest.getClass().getDeclaredFields();
 
-        List<ReplaceOperation> operations=Arrays.stream(fields)
-                .filter(field ->{
-                    field.setAccessible(true);
-                    try{
-                        return field.get(updateUserRequest) != null;
-                    }catch (IllegalAccessException e){
-                        throw new RuntimeException(e);
-                    }
-                })
-                .map(field->{
-                    field.setAccessible(true);
-                    try {
-                        String path = "/"+field.getName();
-                        JsonPointer pointer = new JsonPointer(path);
-                        String value = field.get(updateUserRequest).toString();
-                        TextNode node = new TextNode(value);
-                        ReplaceOperation operation = new ReplaceOperation(pointer, node);
-                        return operation;
-                    } catch (Exception exception) {
-                        throw new RuntimeException(exception);
-                    }
-                }).toList();
-        log.info("operations:: {}", operations);  // to sout
+
+        List<ReplaceOperation> operations = Arrays.stream(fields)
+                .filter(field -> validateField(updateUserRequest, field))
+                .map(field -> buildReplaceOperation(updateUserRequest, field))
+                .toList();
         List<JsonPatchOperation> patchOperations = new ArrayList<>(operations);
         return new JsonPatch(patchOperations);
+    }
+
+    private static boolean validateField(UpdateUserRequest updateUserRequest, Field field) {
+        List<String>list = List.of("interests", "street", "houseNumber", "country", "state", "gender" );
+        field.setAccessible(true);
+        try {
+            return field.get(updateUserRequest) != null && !list.contains(field.getName());
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static ReplaceOperation buildReplaceOperation(UpdateUserRequest updateUserRequest, Field field) {
+        field.setAccessible(true);
+        try {
+            String path = JSON_PATCH_PATH_PREFIX + field.getName();
+            JsonPointer pointer = new JsonPointer(path);
+            String value = field.get(updateUserRequest).toString();
+            TextNode node = new TextNode(value);
+            ReplaceOperation operation = new ReplaceOperation(pointer, node);
+            return operation;
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
+    }
 }
 
 
 
-
-    @Override
-    public UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest, Long id) {
-        User user = findUserById(id);
-        JsonPatch updatePatch = buildUpdatePatch(updateUserRequest);
-        return applyPatch(updatePatch, user);
-    }
-
     private static Set<Interest> parseInterestForm(Set<String> interests){
         return interests.stream()
-              .map(interest -> Interest.valueOf(interest))
+              .map(interest -> Interest.valueOf(interest.toUpperCase()))
               .collect(Collectors.toSet());
+
 
     }
 

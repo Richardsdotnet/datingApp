@@ -162,7 +162,7 @@ public class UserServicesTest {
     }
 
     private UpdateUserRequest buildUpdateRequest() {
-//        Set<String> interests = Set.of("Swimming", "Sports","Cooking");
+        Set<String> interests = Set.of("music", "Sport","Coding");
         UpdateUserRequest updateUserRequest = new UpdateUserRequest();
 //        updateUserRequest.setId(500L);
 
@@ -170,7 +170,7 @@ public class UserServicesTest {
         updateUserRequest.setLastName("chris");
         updateUserRequest.setDateOfBirth(LocalDate.of(2005, Month.NOVEMBER.ordinal(), 25));
 //        MultipartFile testImage = getTestImage();
-//        updateUserRequest.setInterests(interests);
+        updateUserRequest.setInterests(interests);
 //        updateUserRequest.setProfileImage(testImage);
 //        updateUserRequest.setInterests(interests);
         return updateUserRequest;

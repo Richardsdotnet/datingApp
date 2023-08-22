@@ -1,6 +1,8 @@
 package com.richards.promeescuous.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,6 +25,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate dateOfBirth;
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Address address;

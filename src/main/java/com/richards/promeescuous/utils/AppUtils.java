@@ -1,7 +1,6 @@
 package com.richards.promeescuous.utils;
 
 import com.richards.promeescuous.exceptions.PromiscuousBaseException;
-import jdk.internal.foreign.abi.VMStorage;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,7 +20,8 @@ public class AppUtils {
     public static final String WELCOME_MESSAGE = "Welcome to promiscuous inc.";
 
     public static final String BLANK_SPACE = " ";
-    public static final String PROFILE_UPDATE_SUCCESSFUL = "Profile update successful";
+    public static final String JSON_PATCH_PATH_PREFIX = "/";
+
 
     private static final String MAIL_TEMPLATE_LOCATION = "C:\\Users\\PC\\Desktop\\prom-scous\\src\\main\\resources\\templates\\index.html";
 
