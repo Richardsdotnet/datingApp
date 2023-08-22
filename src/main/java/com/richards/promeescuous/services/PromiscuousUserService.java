@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -214,8 +215,9 @@ public class PromiscuousUserService implements UserService {
     }
 
     private static Set<Interest> parseInterestForm(Set<String> interests){
-      Set<Interest> userInterests = interests.stream()
-
+        return interests.stream()
+              .map(interest -> Interest.valueOf(interest))
+              .collect(Collectors.toSet());
 
     }
 

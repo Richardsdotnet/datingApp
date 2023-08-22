@@ -49,8 +49,8 @@ public class UserServicesTest {
 
     @AfterEach
     void setUp() {
-    userServices.deleteAll();
-    addressRepository.deleteAll();
+        userServices.deleteAll();
+        addressRepository.deleteAll();
 
     }
 
@@ -81,7 +81,7 @@ public class UserServicesTest {
     }
 
     @Test
-    public void getAllUsers(){
+    public void getAllUsers() {
         List<GetUserResponse> users = userServices.getAllUsers(1, 5);
         assertThat(users).isNotNull();
         assertThat(users.size()).isEqualTo(5);
@@ -102,7 +102,7 @@ public class UserServicesTest {
     }
 
     @Test
-    public void testThatExceptionIsThrownWhenUserWhenUserAuthenticatesWithBadCredentials()  {
+    public void testThatExceptionIsThrownWhenUserWhenUserAuthenticatesWithBadCredentials() {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail("test@email.com");
         loginRequest.setPassword("bad_password");
@@ -114,7 +114,7 @@ public class UserServicesTest {
     }
 
     @Test
-    public  void testThatUserCanUpdateAccount(){
+    public void testThatUserCanUpdateAccount() {
         UpdateUserRequest updateUserRequest = buildUpdateRequest();
         UpdateUserResponse response = userServices.updateProfile(updateUserRequest, 500L);
 
@@ -123,7 +123,7 @@ public class UserServicesTest {
         GetUserResponse userResponse = userServices.getUserById(500L);
 
         String fullName = userResponse.getFullName();
-        String expectedFullName = new   StringBuilder()
+        String expectedFullName = new StringBuilder()
                 .append(updateUserRequest.getFirstName())
                 .append(BLANK_SPACE)
                 .append(updateUserRequest.getLastName()).toString();
@@ -131,33 +131,54 @@ public class UserServicesTest {
 
 
     }
+//    private  UpdateUserRequest buildUpdateRequest(){
+//        Set<String> interests = Set.of("Swimming", "Sports", "Cooking");
+//        UpdateUserRequest updateRequest = new UpdateUserRequest();
+//       // updateRequest.setId(500L);
+//        updateRequest.setFirstName("Richie");
+//        updateRequest.setLastName("chris");
+//        updateRequest.setDateOfBirth(LocalDate.of(2000, Month.APRIL.ordinal(),25));
+//        MultipartFile testImage = getTestImage();
+//        updateRequest.setProfileImages(testImage);
+//        updateRequest.setInterests(interests);
+//        return updateRequest;
+//    }
 
-    private  UpdateUserRequest buildUpdateRequest(){
-        Set<String> interests = Set.of("Swimming", "Sports", "Cooking");
-        UpdateUserRequest updateRequest = new UpdateUserRequest();
-       // updateRequest.setId(500L);
-        updateRequest.setFirstName("Richie");
-        updateRequest.setLastName("chris");
-        updateRequest.setDateOfBirth(LocalDate.of(2000, Month.APRIL.ordinal(),25));
-        MultipartFile testImage = getTestImage();
-        updateRequest.setProfileImages(testImage);
-        updateRequest.setInterests(interests);
-        return updateRequest;
-    }
-
-    private MultipartFile getTestImage(){
+    private MultipartFile getTestImage() {
         //obtain a path that points to test image
         Path path = Paths.get("C:\\Users\\PC\\Desktop\\prom-scous\\src\\test\\resources\\images\\creative-logo.jpg");
 
         //create stream that can read from file pointed to by path
-        try (InputStream inputStream = Files.newInputStream(path)){
+        try (InputStream inputStream = Files.newInputStream(path)) {
 
             //create a multipartfile using bytes from file pointed to by path
             MultipartFile image = new MockMultipartFile("test_image", inputStream);
             return image;
-        }catch (Exception exception){
+        } catch (Exception exception) {
             throw new PromiscuousBaseException(exception.getMessage());
         }
+
+
     }
 
+    private UpdateUserRequest buildUpdateRequest() {
+//        Set<String> interests = Set.of("Swimming", "Sports","Cooking");
+        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+//        updateUserRequest.setId(500L);
+
+        updateUserRequest.setFirstName("Sherriff");
+        updateUserRequest.setLastName("chris");
+        updateUserRequest.setDateOfBirth(LocalDate.of(2005, Month.NOVEMBER.ordinal(), 25));
+//        MultipartFile testImage = getTestImage();
+//        updateUserRequest.setInterests(interests);
+//        updateUserRequest.setProfileImage(testImage);
+//        updateUserRequest.setInterests(interests);
+        return updateUserRequest;
+
+
+    }
 }
+
+
+
+

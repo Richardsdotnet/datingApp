@@ -1,8 +1,7 @@
 package com.richards.promeescuous.dtos.requests;
 
 import com.richards.promeescuous.models.Gender;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -10,6 +9,9 @@ import java.util.Set;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@RequiredArgsConstructor
 
 public class UpdateUserRequest {
    // private Long id;
