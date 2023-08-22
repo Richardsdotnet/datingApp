@@ -21,6 +21,7 @@ import com.richards.promeescuous.models.User;
 import com.richards.promeescuous.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -131,10 +132,16 @@ public class PromiscuousUserService implements UserService {
 
     @Override
     public UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest, Long id) {
+        ModelMapper modelMapper = new ModelMapper();
+      //  ObjectMapper objectMapper = new ObjectMapper();
+
         User user = findUserById(id);
         Set<String> userInterests = updateUserRequest.getInterests();
         Set<Interest> interests = parseInterestForm(userInterests);
         user.setInterests(interests);
+        Address userAddress = user.getAddress();
+        modelMapper.map(updateUserRequest, userAddress);
+        user.setAddress(userAddress);
         JsonPatch updatePatch = buildUpdatePatch(updateUserRequest);
         return applyPatch(updatePatch, user);
 
