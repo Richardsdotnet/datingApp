@@ -1,5 +1,7 @@
 package com.richards.promeescuous.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +22,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dateOfBirth;
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Address address;
@@ -27,6 +30,7 @@ public class User {
     private Gender gender;
     @Enumerated(value = EnumType.STRING)
     private Role authority;
+
     private String firstName;
 
     private String lastName;
@@ -40,7 +44,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<Interest> interests;
 
     private boolean isActive;

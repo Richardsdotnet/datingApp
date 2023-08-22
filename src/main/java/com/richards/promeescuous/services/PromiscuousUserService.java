@@ -123,25 +123,86 @@ public class PromiscuousUserService implements UserService {
 
     }
 
+  //  @Override
+
+//    public UpdateUserResponse updateUserProfile(JsonPatch jsonPatch, Long id) {
+//        ObjectMapper mapper = new ObjectMapper();
+//        User user = findUserById(id);
+//        JsonNode node = mapper.convertValue(user, JsonNode.class);
+//        try {
+//            JsonNode updatedNode = jsonPatch.apply(node);
+//            User updatedUser = mapper.convertValue(updatedNode, User.class);
+//            updatedUser = userRepository.save(updatedUser);
+//            UpdateUserResponse response = new UpdateUserResponse();
+//            response.setMessage("update successful");
+//            return response;
+//
+//        } catch (JsonPatchException exception) {
+//            throw new PromiscuousBaseException(":(");
+//        }
+//
+//    }
     @Override
-
-    public UpdateUserResponse updateUserProfile(JsonPatch jsonPatch, Long id) {
-        ObjectMapper mapper = new ObjectMapper();
+    public UpdateUserResponse updateUserProfile(UpdateUserRequest updateUserRequest, Long id){
         User user = findUserById(id);
-        JsonNode node = mapper.convertValue(user, JsonNode.class);
-        try {
-            JsonNode updatedNode = jsonPatch.apply(node);
-            User updatedUser = mapper.convertValue(updatedNode, User.class);
-            updatedUser = userRepository.save(updatedUser);
-            UpdateUserResponse response = new UpdateUserResponse();
-            response.setMessage("update successful");
-            return response;
+        JsonPatch updatePatch = buildUpdatePatch(updateUserRequest);
+        return applyPatch(updatePatch, user);
 
-        } catch (JsonPatchException exception) {
-            throw new PromiscuousBaseException(":(");
+
+
+    }
+
+    private UpdateUserResponse applyPatch(JsonPatch updatePatch, User user) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        //1. convert user to jsonNode
+        JsonNode userNode = objectMapper.convertValue(user, JsonNode.class);
+        try {
+            //.2. Apply patch to json from step 1
+            JsonNode updatedNode = updatePatch.apply(userNode);
+            // 3.convert updateNode to user
+            user = objectMapper.convertValue(updatedNode, User.class);
+            // 4. save updated user from step 3 in the DB
+            userRepository.save(user);
+            return new UpdateUserResponse(PROFILE_UPDATE_SUCCESSFUL);
+
+        }catch (JsonsPatchException | JsonPatchException exception){
+            throw new PromiscuousBaseException((exception.getMessage()));
         }
 
     }
+
+
+    private JsonPatch buildUpdatePatch(UpdateUserRequest updateUserRequest) {
+        Field[] fields = updateUserRequest.getClass().getDeclaredFields();
+
+        List<ReplaceOperation> operations=Arrays.stream(fields)
+                .filter(field ->{
+                    field.setAccessible(true);
+                    try{
+                        return field.get(updateUserRequest) != null;
+                    }catch (IllegalAccessException e){
+                        throw new RuntimeException(e);
+                    }
+                })
+                .map(field->{
+                    field.setAccessible(true);
+                    try {
+                        String path = "/"+field.getName();
+                        JsonPointer pointer = new JsonPointer(path);
+                        String value = field.get(updateUserRequest).toString();
+                        TextNode node = new TextNode(value);
+                        ReplaceOperation operation = new ReplaceOperation(pointer, node);
+                        return operation;
+                    } catch (Exception exception) {
+                        throw new RuntimeException(exception);
+                    }
+                }).toList();
+        log.info("operations:: {}", operations);  // to sout
+        List<JsonPatchOperation> patchOperations = new ArrayList<>(operations);
+        return new JsonPatch(patchOperations);
+}
+
+
 
 
     @Override
@@ -150,32 +211,6 @@ public class PromiscuousUserService implements UserService {
 
         return null;
     }
-
-    private JsonPatch buildUpdatePatch(UpdateUserRequest updateUserRequest) {
-            JsonPatch patch;
-            Field[] fields = updateUserRequest.getClass().getDeclaredFields();
-
-            List<ReplaceOperation> operations=Arrays.stream(fields)
-                    .filter(field -> field!=null)
-                    .map(field->{
-                        try {
-                            String path = "/"+field.getName();
-                            JsonPointer pointer = new JsonPointer(path);
-                            String value = field.get(field.getName()).toString();
-                            TextNode node = new TextNode(value);
-                            ReplaceOperation operation = new ReplaceOperation(pointer, node);
-                            return operation;
-                        } catch (Exception exception) {
-                            throw new RuntimeException(exception);
-                        }
-                    }).toList();
-
-            List<JsonPatchOperation> patchOperations = new ArrayList<>(operations);
-            return new JsonPatch(patchOperations);
-}
-
-
-
 
 
     private User findUserById(Long id){
