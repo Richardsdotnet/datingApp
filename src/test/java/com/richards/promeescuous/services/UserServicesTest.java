@@ -9,7 +9,10 @@ import com.richards.promeescuous.dtos.responses.LoginResponse;
 import com.richards.promeescuous.dtos.responses.UpdateUserResponse;
 import com.richards.promeescuous.exceptions.BadCredentialsExceptions;
 import com.richards.promeescuous.exceptions.PromiscuousBaseException;
+import com.richards.promeescuous.models.Interest;
+import com.richards.promeescuous.models.User;
 import com.richards.promeescuous.repositories.AddressRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +36,7 @@ import static com.richards.promeescuous.utils.AppUtils.BLANK_SPACE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Slf4j
@@ -113,6 +117,7 @@ public class UserServicesTest {
 
     }
 
+   
     @Test
     public void testThatUserCanUpdateAccount() {
         UpdateUserRequest updateUserRequest = buildUpdateRequest();
@@ -177,6 +182,21 @@ public class UserServicesTest {
 
 
     }
+
+
+
+
+    @Test
+    public void testThatUserCanBeSuggestedByInterest(){
+        User user = new User();
+        User secondUser = new User();
+        user.setInterests(Set.of(Interest.CODING));
+        secondUser.setInterests(Set.of(Interest.CODING,Interest.SPORT));
+        assertTrue(user.getInterests().containsAll(secondUser.getInterests()));
+
+
+    }
+
 }
 
 

@@ -26,7 +26,7 @@ public class CloudinaryService implements CloudService {
         try {
             Map<?, ?> response = uploader.upload(file.getBytes(), ObjectUtils.asMap(
 
-                    "public_id", "/", "Promiscuous/asserts" + file.getName(),
+                    "public_id", "/", "Promiscuous/assets/uploads" + file.getName(),
                     "api_key", appConfig.getCloudApiKey(),
                     "api_secret", appConfig.getCloudApiSecret(),
                     "cloud_name", appConfig.getCloudApiName(),

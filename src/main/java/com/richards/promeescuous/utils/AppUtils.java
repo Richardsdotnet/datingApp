@@ -21,7 +21,7 @@ public class AppUtils {
 
     public static final String BLANK_SPACE = " ";
     public static final String JSON_PATCH_PATH_PREFIX = "/";
-    public static final String TEST_IMAGE_LOCATION = "";
+    public static final String TEST_IMAGE_LOCATION = "C:\\Users\\PC\\Desktop\\prom-scous\\src\\test\\resources\\images\\creative-logo.jpg";
 
 
     private static final String MAIL_TEMPLATE_LOCATION = "C:\\Users\\PC\\Desktop\\prom-scous\\src\\main\\resources\\templates\\index.html";

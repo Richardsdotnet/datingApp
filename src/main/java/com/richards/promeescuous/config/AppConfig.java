@@ -19,7 +19,6 @@ public class AppConfig {
     @Value("${app.base.url}")
     private String baseUrl;
     @Value("${cloud.api.key}")
-
     private String cloudApiKey;
     @Value("${cloud.api.name}")
     private String cloudApiName;
