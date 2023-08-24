@@ -6,8 +6,12 @@ import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
 import com.richards.promeescuous.dtos.requests.UpdateUserRequest;
 import com.richards.promeescuous.dtos.responses.*;
 import com.richards.promeescuous.exceptions.BadCredentialsExceptions;
+import com.richards.promeescuous.models.Interest;
+import com.richards.promeescuous.models.User;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface UserService {
     RegisterUserResponse register(RegisterUserRequest registerUserRequest);
@@ -25,4 +29,7 @@ public interface UserService {
     UpdateUserResponse updateUserProfile(JsonPatch jsonPatch, Long id);
 
     UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest, Long id);
+
+
+    List<User> suggestUserByInterest(Long userId);
 }

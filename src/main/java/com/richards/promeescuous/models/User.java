@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
+import static jakarta.persistence.EnumType.STRING;
+
 @Entity
 @Setter
 @Getter
@@ -29,9 +31,9 @@ public class User {
     private LocalDate dateOfBirth;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Address address;
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = STRING)
     private Gender gender;
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = STRING)
     private Role authority;
 
     private String firstName;
@@ -48,6 +50,7 @@ public class User {
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(value = STRING)
     private Set<Interest> interests;
 
     private boolean isActive;

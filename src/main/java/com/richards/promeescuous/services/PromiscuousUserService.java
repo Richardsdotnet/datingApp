@@ -41,6 +41,7 @@ import static com.richards.promeescuous.utils.JwtUtils.*;
 @AllArgsConstructor
 @Slf4j
 public class PromiscuousUserService implements UserService {
+
     private final UserRepository userRepository;
 
     private final MailService mailServices;
@@ -58,8 +59,9 @@ public class PromiscuousUserService implements UserService {
         user.setAddress(new Address());
         User savedUser = userRepository.save(user);
         EmailNotificationRequest request = buildEmailRequest(savedUser);
+        log.info(String.valueOf(savedUser));
         log.info("email:::{}", request);
-        mailServices.send(request);
+//        mailServices.send(request);
         RegisterUserResponse registerUserResponse = new RegisterUserResponse();
         registerUserResponse.setMessage(USER_REGISTRATION_SUCCESSFUL.name());
         return registerUserResponse;
@@ -93,7 +95,7 @@ public class PromiscuousUserService implements UserService {
 
     @Override
     public List<GetUserResponse> getAllUsers(int page, int pageSize) {
-        List<GetUserResponse> users = new ArrayList<>();
+//        List<GetUserResponse> users = new ArrayList<>();
         Pageable pageable = buildPageRequest(page, pageSize);
         Page<User> usersPage = userRepository.findAll(pageable);
         List<User> foundUsers = usersPage.getContent();
@@ -133,7 +135,7 @@ public class PromiscuousUserService implements UserService {
     @Override
     public UpdateUserResponse updateProfile(UpdateUserRequest updateUserRequest, Long id) {
         ModelMapper modelMapper = new ModelMapper();
-      //  ObjectMapper objectMapper = new ObjectMapper();
+        //  ObjectMapper objectMapper = new ObjectMapper();
 
         User user = findUserById(id);
         Set<String> userInterests = updateUserRequest.getInterests();
@@ -149,25 +151,25 @@ public class PromiscuousUserService implements UserService {
 
 
 
-    private UpdateUserResponse applyPatch(JsonPatch updatePatch, User user) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        //1. convert user to jsonNode
-        JsonNode userNode = objectMapper.convertValue(user, JsonNode.class);
-        try {
-            //.2. Apply patch to json from step 1
-            JsonNode updatedNode = updatePatch.apply(userNode);
-            // 3.convert updateNode to user
-            user = objectMapper.convertValue(updatedNode, User.class);
-            // 4. save updated user from step 3 in the DB
-            userRepository.save(user);
-            return  new UpdateUserResponse(PROFILE_UPDATE_SUCCESSFUL.name());
-           // return new UpdateUserResponse(PROFILE_UPDATE_SUCCESSFUL);
+    @Override
+    public List<User> suggestUserByInterest(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty()) throw new RuntimeException("User Not Found");
+        User user = optionalUser.get();
 
-        }catch ( JsonPatchException exception){
-            throw new PromiscuousBaseException((exception.getMessage()));
-        }
+        Set<Interest> userInterests = user.getInterests();
+
+        return userRepository.findAll()
+                .stream()
+                .filter(otherUsers-> !otherUsers.getId().equals(userId))
+                .filter(otherUsers -> !Collections.disjoint(userInterests, otherUsers.getInterests()))
+                .collect(Collectors.toList());
 
     }
+
+
+
+
 
 
     private JsonPatch buildUpdatePatch(UpdateUserRequest updateUserRequest) {
@@ -301,4 +303,24 @@ public class PromiscuousUserService implements UserService {
 
         return request;
     }
+
+
+    private UpdateUserResponse applyPatch( JsonPatch updatePatch, User user) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        // Convert user to JsonNode
+        JsonNode userNode = objectMapper.convertValue(user, JsonNode.class);
+        try {
+            // Apply patch to JsonNode from step
+            JsonNode updateNode = updatePatch.apply(userNode);
+            // convert updateNode to user
+            user = objectMapper.convertValue(updateNode, User.class);
+            // Save updateUser from step 3 in the DB
+            userRepository.save(user);
+            return new UpdateUserResponse(PROFILE_UPDATE_SUCCESSFUL.name());
+
+        }catch (JsonPatchException exception){
+            throw new PromiscuousBaseException(exception.getMessage());
+        }
+    }
+
 }

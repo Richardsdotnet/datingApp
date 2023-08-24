@@ -9,10 +9,8 @@ import com.richards.promeescuous.dtos.responses.LoginResponse;
 import com.richards.promeescuous.dtos.responses.UpdateUserResponse;
 import com.richards.promeescuous.exceptions.BadCredentialsExceptions;
 import com.richards.promeescuous.exceptions.PromiscuousBaseException;
-import com.richards.promeescuous.models.Interest;
 import com.richards.promeescuous.models.User;
 import com.richards.promeescuous.repositories.AddressRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +34,6 @@ import static com.richards.promeescuous.utils.AppUtils.BLANK_SPACE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Slf4j
@@ -53,10 +50,11 @@ public class UserServicesTest {
 
     @AfterEach
     void setUp() {
-        userServices.deleteAll();
-        addressRepository.deleteAll();
+//        userServices.deleteAll();
+//        addressRepository.deleteAll();
 
     }
+
 
     @Test
     public void testThatUserCanRegister() {
@@ -136,18 +134,6 @@ public class UserServicesTest {
 
 
     }
-//    private  UpdateUserRequest buildUpdateRequest(){
-//        Set<String> interests = Set.of("Swimming", "Sports", "Cooking");
-//        UpdateUserRequest updateRequest = new UpdateUserRequest();
-//       // updateRequest.setId(500L);
-//        updateRequest.setFirstName("Richie");
-//        updateRequest.setLastName("chris");
-//        updateRequest.setDateOfBirth(LocalDate.of(2000, Month.APRIL.ordinal(),25));
-//        MultipartFile testImage = getTestImage();
-//        updateRequest.setProfileImages(testImage);
-//        updateRequest.setInterests(interests);
-//        return updateRequest;
-//    }
 
     private MultipartFile getTestImage() {
         //obtain a path that points to test image
@@ -186,13 +172,30 @@ public class UserServicesTest {
 
 
 
+
     @Test
     public void testThatUserCanBeSuggestedByInterest(){
-        User user = new User();
-        User secondUser = new User();
-        user.setInterests(Set.of(Interest.CODING));
-        secondUser.setInterests(Set.of(Interest.CODING,Interest.SPORT));
-        assertTrue(user.getInterests().containsAll(secondUser.getInterests()));
+        Set<String> firstInterests = Set.of("music", "reading");
+        Set<String> secondInterests = Set.of( "Sport","Coding");
+        Set<String> thirdInterests = Set.of( "Sport","Coding");
+        Set<String> forthInterests = Set.of( "Sport", "coding");
+
+        UpdateUserRequest updateUserRequest = buildUpdateRequest();
+        updateUserRequest.setInterests(firstInterests);
+        UpdateUserResponse response = userServices.updateProfile(updateUserRequest, 501L);
+
+        updateUserRequest.setInterests(secondInterests);
+        userServices.updateProfile(updateUserRequest, 502L);
+
+        updateUserRequest.setInterests(thirdInterests);
+        userServices.updateProfile(updateUserRequest, 503L);
+
+        updateUserRequest.setInterests(forthInterests);
+        userServices.updateProfile(updateUserRequest, 504L);
+
+        List<User> usersWithCommonInterests = userServices.suggestUserByInterest(504L);
+
+        assertThat(usersWithCommonInterests.size()).isGreaterThan(0);
 
 
     }

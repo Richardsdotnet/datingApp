@@ -1,6 +1,6 @@
 package com.richards.promeescuous.models;
 
-public enum Interest {
+public enum  Interest {
     SPORT,
     READING,
     CODING,
