@@ -9,49 +9,48 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 
-public class AppConfig {
-    @Value("${mail.api.key}")
-    private String mailApiKey;
+public class AppConfig {  @Value("${mail.api.key}")
+private String mailApiKey;
 
     @Value("${app.dev.token}")
     private String testToken;
 
     @Value("${app.base.url}")
     private String baseUrl;
-    @Value("${cloud.api.key}")
-    private String cloudApiKey;
+
     @Value("${cloud.api.name}")
-    private String cloudApiName;
+    private String cloudName;
 
 
     @Value("${cloud.api.secret}")
-    private String cloudApiSecret;
+    private String cloudSecret;
 
-
-    public String getTestToken() {
-        return testToken;
-    }
+    @Value("${cloud.api.key}")
+    private String cloudApiKey;
 
     public String getMailApiKey() {
         return mailApiKey;
     }
 
-    public String getBaseUrl() {
-        return baseUrl;
-
+    public String getTestToken(){
+        return testToken;
     }
 
+    public String getBaseUrl(){
+        return baseUrl;
+    }
 
-    public String getCloudApiKey() {
+    public String getCloudName(){
+        return cloudName;
+    }
+
+    public String getCloudSecret(){
+        return cloudSecret;
+    }
+
+    public String getCloudApiKey(){
         return cloudApiKey;
     }
 
-    public String getCloudApiName() {
-        return cloudApiName;
-    }
-
-    public String getCloudApiSecret() {
-        return cloudApiSecret;
-    }
 
 }

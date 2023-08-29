@@ -9,6 +9,7 @@ import com.richards.promeescuous.exceptions.BadCredentialsExceptions;
 import com.richards.promeescuous.models.Interest;
 import com.richards.promeescuous.models.User;
 
+import javax.xml.stream.Location;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,4 +33,5 @@ public interface UserService {
 
 
     List<User> suggestUserByInterest(Long userId);
+
 }

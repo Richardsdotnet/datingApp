@@ -17,9 +17,10 @@ import com.richards.promeescuous.exceptions.PromiscuousBaseException;
 import com.richards.promeescuous.exceptions.UserNotFoundException;
 import com.richards.promeescuous.models.Address;
 import com.richards.promeescuous.models.Interest;
+import com.richards.promeescuous.models.Location;
 import com.richards.promeescuous.models.User;
 import com.richards.promeescuous.repositories.UserRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -31,22 +32,24 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
 import static com.richards.promeescuous.dtos.responses.ResponseMessage.*;
 import static com.richards.promeescuous.exceptions.ExceptionMessage.*;
 import static com.richards.promeescuous.utils.AppUtils.*;
 import static com.richards.promeescuous.utils.JwtUtils.*;
 
 @Service
-@AllArgsConstructor
+//@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class PromiscuousUserService implements UserService {
 
     private final UserRepository userRepository;
 
     private final MailService mailServices;
+    private  ModelMapper mapper;
 
     private final AppConfig appConfig;
+    private  AddressService addressService;
 
     @Override
     public RegisterUserResponse register(RegisterUserRequest registerUserRequest) {
@@ -166,8 +169,6 @@ public class PromiscuousUserService implements UserService {
                 .collect(Collectors.toList());
 
     }
-
-
 
 
 

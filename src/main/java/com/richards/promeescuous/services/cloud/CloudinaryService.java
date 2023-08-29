@@ -28,8 +28,8 @@ public class CloudinaryService implements CloudService {
 
                     "public_id", "/", "Promiscuous/assets/uploads" + file.getName(),
                     "api_key", appConfig.getCloudApiKey(),
-                    "api_secret", appConfig.getCloudApiSecret(),
-                    "cloud_name", appConfig.getCloudApiName(),
+                    "api_secret", appConfig.getCloudSecret(),
+                    "cloud_name", appConfig.getCloudName(),
                     "secure", true));
 
             return response.get("url").toString();
