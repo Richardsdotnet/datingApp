@@ -45,6 +45,7 @@ import static com.richards.promeescuous.utils.JwtUtil.isValidJwt;
 @Service
 @Slf4j
 @AllArgsConstructor
+
 public class PromiscuousUserService implements UserService {
     private final UserRepository userRepository;
     private final MailService mailService;

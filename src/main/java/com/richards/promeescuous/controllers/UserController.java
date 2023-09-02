@@ -1,16 +1,13 @@
 package com.richards.promeescuous.controllers;
 
-
-
-
-import africa.semicolon.promeescuous.dtos.requests.MediaReactionRequest;
-import africa.semicolon.promeescuous.dtos.requests.RegisterUserRequest;
-import africa.semicolon.promeescuous.dtos.requests.UpdateUserRequest;
-import africa.semicolon.promeescuous.dtos.requests.UploadMediaRequest;
-import africa.semicolon.promeescuous.dtos.responses.*;
-import africa.semicolon.promeescuous.exceptions.UserNotFoundException;
-import africa.semicolon.promeescuous.services.UserService;
 import com.github.fge.jsonpatch.JsonPatchException;
+import com.richards.promeescuous.dtos.requests.MediaReactionRequest;
+import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
+import com.richards.promeescuous.dtos.requests.UpdateUserRequest;
+import com.richards.promeescuous.dtos.requests.UploadMediaRequest;
+import com.richards.promeescuous.dtos.responses.*;
+import com.richards.promeescuous.exceptions.UserNotFoundException;
+import com.richards.promeescuous.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -27,7 +27,7 @@ class AppUtilsTest {
     @Test
     public void generateToken(){
         String email = "test@email.com";
-        String token = JwtUtil.generateToken(email);
+        String token = JwtUtil.generateVerificationToken(email);
         log.info("generated token --> {} ", token);
         assertThat(token).isNotNull();
 
