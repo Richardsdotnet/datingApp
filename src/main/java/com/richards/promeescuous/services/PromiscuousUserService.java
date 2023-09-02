@@ -17,7 +17,6 @@ import com.richards.promeescuous.exceptions.PromiscuousBaseException;
 import com.richards.promeescuous.exceptions.UserNotFoundException;
 import com.richards.promeescuous.models.Address;
 import com.richards.promeescuous.models.Interest;
-import com.richards.promeescuous.models.Location;
 import com.richards.promeescuous.models.User;
 import com.richards.promeescuous.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;

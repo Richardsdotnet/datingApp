@@ -4,23 +4,32 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.FetchType.EAGER;
 
 @Entity
 @Setter
 @Getter
 public class Media {
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        private Long id;
+        private String description;
+        @OneToMany(cascade = ALL, fetch = EAGER)
+        private List<MediaReaction> reactions;
+        @Column(unique = true)
+        private String url;
+        @ManyToOne
+        private User user;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String description;
-    @Enumerated(value = EnumType.STRING)
-    @ElementCollection
+        private boolean isLike;
 
-    private List<Reaction> reactions;
-    @Column(unique = false, columnDefinition = "MEDIUMTEXT", length = 1000)
-    private String url;
-    @ManyToOne
-    private User user;
-}
+
+        public Media(){
+            reactions = new ArrayList<>();
+        }
+    }
+

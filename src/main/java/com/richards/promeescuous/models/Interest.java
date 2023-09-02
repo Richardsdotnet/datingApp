@@ -1,8 +1,8 @@
 package com.richards.promeescuous.models;
 
 public enum  Interest {
-    SPORT,
-    READING,
-    CODING,
-    MUSIC
+    SPORTS, PHOTOGRAPHY,
+    TRAVELLING, CODING,
+    SWIMMING, READING,
+    SLEEPING, COOKING;
 }
