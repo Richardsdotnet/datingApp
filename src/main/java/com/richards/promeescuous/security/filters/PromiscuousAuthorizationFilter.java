@@ -1,8 +1,8 @@
 package com.richards.promeescuous.security.filters;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,12 +22,11 @@ import static com.richards.promeescuous.utils.AppUtil.APP_NAME;
 import static com.richards.promeescuous.utils.AppUtil.getPublicPaths;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-
 @Slf4j
 public class PromiscuousAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, ServletException, IOException {
         log.info("I got called because a request to url->{} was made", request.getServletPath());
         if (getPublicPaths().contains(request.getServletPath())) filterChain.doFilter(request, response);
         else{
@@ -50,6 +49,6 @@ public class PromiscuousAuthorizationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             filterChain.doFilter(request, response);
-        }
-    }
+ }
+}
 }
