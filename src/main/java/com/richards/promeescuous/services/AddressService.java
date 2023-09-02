@@ -11,12 +11,5 @@ import java.util.List;
 
 public interface AddressService {
 
-
-        AddressCreationResponse saveAddress(AddressCreationRequest addressCreationRequest);
-        AddressUpdateResponse updateAddress(AddressUpdateRequest addressUpdateRequest);
-        List<GetAddressResponse> getAllAddresses();
-        GetAddressResponse getAddressById(Long id);
-        List<GetAddressResponse> getAddressBy(Location location);
-        void deleteAll();
-    }
+}
 
