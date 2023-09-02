@@ -1,8 +1,5 @@
 package com.richards.promeescuous.services;
 
-import com.richards.promeescuous.dtos.requests.LoginRequest;
-import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
-import com.richards.promeescuous.dtos.requests.UpdateUserRequest;
 import com.richards.promeescuous.dtos.responses.ApiResponse;
 import com.richards.promeescuous.dtos.responses.GetUserResponse;
 import com.richards.promeescuous.dtos.responses.LoginResponse;

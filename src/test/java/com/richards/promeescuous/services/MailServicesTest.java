@@ -1,8 +1,6 @@
 package com.richards.promeescuous.services;
 
 
-import com.richards.promeescuous.dtos.requests.EmailNotificationRequest;
-import com.richards.promeescuous.dtos.requests.Recipient;
 import com.richards.promeescuous.dtos.responses.EmailNotificationResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

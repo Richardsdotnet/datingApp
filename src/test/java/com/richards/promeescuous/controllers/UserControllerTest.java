@@ -1,8 +1,6 @@
 package com.richards.promeescuous.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.richards.promeescuous.dtos.requests.FindUserRequest;
-import com.richards.promeescuous.dtos.requests.RegisterUserRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

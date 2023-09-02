@@ -1,7 +1,5 @@
 package com.richards.promeescuous.services;
 
-import com.richards.promeescuous.dtos.requests.AddressCreationRequest;
-import com.richards.promeescuous.dtos.requests.AddressUpdateRequest;
 import com.richards.promeescuous.dtos.responses.AddressCreationResponse;
 import com.richards.promeescuous.dtos.responses.GetAddressResponse;
 import org.junit.jupiter.api.BeforeEach;

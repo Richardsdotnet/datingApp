@@ -1,30 +1,26 @@
 package com.richards.promeescuous.exceptions;
-
-
 public enum ExceptionMessage {
-
-
-
-    USER_NOT_FOUND_EXCEPTION("User no found"),
-
+    USER_NOT_FOUND_EXCEPTION("User not found"),
     USER_WITH_EMAIL_NOT_FOUND_EXCEPTION("user with email %s not found"),
 
-    ACCOUNT_ACTIVATION_FAILED_EXCEPTION("Account activation was not successfully"),
-    INVALID_CREDENTIALS_EXCEPTION("Invalid authentication credentials");
 
+
+    ACCOUNT_ACTIVATION_FAILED_EXCEPTION("Account activation was not successful"),
+
+    MEDIA_NOT_FOUND(""),
+    RESOURCE_NOT_FOUND(""),
+    INVALID_CREDENTIALS_EXCEPTION("Invalid authentication credentials"),
+    USER_REGISTRATION_FAILED_EXCEPTION("User registration failed"),
+
+    AUTHENTICATION_NOT_SUPPORTED("Authentication not supported on this system");
     ExceptionMessage(String message){
-        this.message = message;
+        this.message=message;
     }
 
-    private String message;
+    private final String message;
 
-    public String getMessage() {
+    public String getMessage(){
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-    }
-
-
+}
