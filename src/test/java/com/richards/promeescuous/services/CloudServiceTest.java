@@ -1,7 +1,7 @@
 package com.richards.promeescuous.services;
 
 import com.richards.promeescuous.services.cloud.CloudService;
-import com.richards.promeescuous.utils.AppUtils;
+import com.richards.promeescuous.utils.AppUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +27,7 @@ public class CloudServiceTest {
     @Test
 
     public void testUploadFile(){
-        Path path = Paths.get(AppUtils.TEST_IMAGE_LOCATION);
+        Path path = Paths.get(AppUtil.TEST_IMAGE_LOCATION);
         try (
             InputStream inputStream = Files.newInputStream(path)){
                 MultipartFile file = new MockMultipartFile("testImages", inputStream);

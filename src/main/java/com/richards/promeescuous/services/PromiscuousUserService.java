@@ -33,8 +33,8 @@ import java.util.stream.Collectors;
 
 import static com.richards.promeescuous.dtos.responses.ResponseMessage.*;
 import static com.richards.promeescuous.exceptions.ExceptionMessage.*;
-import static com.richards.promeescuous.utils.AppUtils.*;
-import static com.richards.promeescuous.utils.JwtUtils.*;
+import static com.richards.promeescuous.utils.AppUtil.*;
+import static com.richards.promeescuous.utils.JwtUtil.*;
 
 @Service
 //@AllArgsConstructor

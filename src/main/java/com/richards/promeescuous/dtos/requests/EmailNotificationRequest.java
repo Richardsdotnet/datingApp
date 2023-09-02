@@ -8,8 +8,8 @@ import lombok.Setter;
 
 import java.util.List;
 
-import static com.richards.promeescuous.utils.AppUtils.APP_EMAIL;
-import static com.richards.promeescuous.utils.AppUtils.APP_NAME;
+import static com.richards.promeescuous.utils.AppUtil.APP_EMAIL;
+import static com.richards.promeescuous.utils.AppUtil.APP_NAME;
 
 @AllArgsConstructor
 @Getter

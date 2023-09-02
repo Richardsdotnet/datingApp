@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.richards.promeescuous.utils.JwtUtils.generateToken;
+import static com.richards.promeescuous.utils.JwtUtil.generateToken;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 

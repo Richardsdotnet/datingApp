@@ -23,7 +23,7 @@ import java.time.Month;
 import java.util.List;
 import java.util.Set;
 
-import static com.richards.promeescuous.utils.AppUtils.BLANK_SPACE;
+import static com.richards.promeescuous.utils.AppUtil.BLANK_SPACE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
