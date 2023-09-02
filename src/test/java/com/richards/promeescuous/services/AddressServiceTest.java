@@ -1,7 +1,5 @@
 package com.richards.promeescuous.services;
 
-import com.richards.promeescuous.dtos.responses.AddressCreationResponse;
-import com.richards.promeescuous.dtos.responses.GetAddressResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

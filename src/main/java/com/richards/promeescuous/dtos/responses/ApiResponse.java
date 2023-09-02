@@ -1,6 +1,5 @@
 package com.richards.promeescuous.dtos.responses;
 
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

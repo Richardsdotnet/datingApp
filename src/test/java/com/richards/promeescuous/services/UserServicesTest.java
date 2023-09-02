@@ -1,9 +1,5 @@
 package com.richards.promeescuous.services;
 
-import com.richards.promeescuous.dtos.responses.ApiResponse;
-import com.richards.promeescuous.dtos.responses.GetUserResponse;
-import com.richards.promeescuous.dtos.responses.LoginResponse;
-import com.richards.promeescuous.dtos.responses.UpdateUserResponse;
 import com.richards.promeescuous.exceptions.BadCredentialsExceptions;
 import com.richards.promeescuous.exceptions.PromiscuousBaseException;
 import com.richards.promeescuous.models.User;

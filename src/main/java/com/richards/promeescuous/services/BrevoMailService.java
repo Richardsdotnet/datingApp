@@ -1,7 +1,6 @@
 package com.richards.promeescuous.services;
 
 import com.richards.promeescuous.config.AppConfig;
-import com.richards.promeescuous.dtos.responses.EmailNotificationResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;

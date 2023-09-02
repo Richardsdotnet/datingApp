@@ -1,7 +1,6 @@
 package com.richards.promeescuous.security.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.richards.promeescuous.dtos.responses.ApiResponse;
 import com.richards.promeescuous.exceptions.PromiscuousBaseException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
