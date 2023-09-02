@@ -1,5 +1,6 @@
 package com.richards.promeescuous.models;
 
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -15,50 +16,49 @@ import java.util.Set;
 import static jakarta.persistence.EnumType.STRING;
 
 @Entity
+@Table(name = "users")
 @Setter
 @Getter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")
-
+@AllArgsConstructor
+@ToString
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate dateOfBirth;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Address address;
-    @Enumerated(value = STRING)
+    @Enumerated(STRING)
     private Gender gender;
-    @Enumerated(value = STRING)
-    private Role authority;
-
+    private String createdAt;
     private String firstName;
 
     private String lastName;
-
-    private String createdAt;
-
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(value = STRING)
+    private Set<Interest> interests;
     @Column(unique = true, nullable = false)
     private String email;
     @Column(unique = true)
     private String phoneNumber;
     @Column(nullable = false)
     private String password;
-
-    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(value = STRING)
-    private Set<Interest> interests;
-
+    private Role role;
     private boolean isActive;
 
+
     @PrePersist
-    public void setCreatedDate() {
-        var currentTime= LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyy HH:mm:ss");
+    public void setCreatedAt(){
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         createdAt = currentTime.format(formatter);
+
     }
+
 }
